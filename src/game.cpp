@@ -1,6 +1,7 @@
 #include "game.h"
 #include "math.h"
 
+//Construct game object and initialize game variables - Written by David Stuckey
 Game::Game(){
     for(int j = 0; j < 12; j++){
         for(int i = 0; i < 240; i++){

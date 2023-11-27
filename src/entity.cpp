@@ -2,13 +2,16 @@
 
 #define g 0.2
 
+//Construct entity at given x,y position and w,h size - Written by David Stuckey
 Entity::Entity(int x, int y, int w, int h) : x{x}, y{y}, w{w}, h{h} {
     vx = 0;
     vy = 0;
 }
 
+//Construct default entity - Written by David Stuckey
 Entity::Entity() : Entity(0,0,0,0) {}
 
+//Update entity position and velocity - Written by David Stuckey
 void Entity::update(){
     prevX = x;
     prevY = y;

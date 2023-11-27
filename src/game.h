@@ -7,6 +7,7 @@
 
 using namespace std;
 
+//Class representing main game screen/loop - Header written by David Stuckey
 class Game{
     private:
         int tiles[12][128];
@@ -16,6 +17,7 @@ class Game{
         list<Item> items;
         list<Projectile> projs;
         Entity player;
+    
     public:
         explicit Game();
         int update();

@@ -1,6 +1,7 @@
 #pragma once
 #include "FEHLCD.h"
 
+//Class representing a game object with position and velocity - Header written by David Stuckey
 class Entity{
     private:
         int x,y,w,h, prevX, prevY, killFlag;
@@ -18,6 +19,8 @@ class Entity{
         int getX(), getY(), getW(), getH();
 };
 
+//Class representing a game object with position and velocity 
+//and defined movement behavior that damages the player - Header written by David Stuckey
 class Enemy : public Entity{
     private:
         int type;
@@ -29,6 +32,8 @@ class Enemy : public Entity{
         void draw();
 };
 
+//Class representing a game object with position and velocity 
+//that disappears on collision with the player - Header written by David Stuckey
 class Item : public Entity{
     public:
         Item(int x, int y, int w, int h);
@@ -37,6 +42,8 @@ class Item : public Entity{
         void draw();
 };
 
+//Class representing a game object with position and velocity 
+//that disappears when it leaves the screen or on contact with the player or a tile- Header written by David Stuckey
 class Projectile : public Entity{
     public:
         Projectile(int x, int y, int w, int h, float vx, float vy);
@@ -46,6 +53,8 @@ class Projectile : public Entity{
         void draw();
 };
 
+//Class representing a game object with position and velocity 
+//that can be controlled by the player with keyboard input- Header written by David Stuckey
 class Player : public Entity{
     private:
         int health, score;

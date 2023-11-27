@@ -20,6 +20,7 @@ void runGame();
 
 using namespace std;
 
+//Run main menu, allow user to enter game, info, stats, or credits screen - Written by David Stuckey
 int main(){
     
     //Enumerate menu buttons
@@ -76,7 +77,7 @@ int main(){
     }
 }
 
-//Start a new game, and update game object until game ends
+//Start a new game, and update game object until game ends - Written by David Stuckey
 void runGame(){
     Game game = Game();
 
@@ -88,7 +89,7 @@ void runGame(){
     }
 }
 
-//Display stats until touch + release
+//Display stats until touch + release - Written by David Stuckey
 void stats(){
     
     //Clear screen
@@ -127,7 +128,7 @@ void stats(){
     while(LCD.Touch(&x, &y)){}
 }
 
-//Display game instructions until touch + release
+//Display game instructions until touch + release - Written by David Stuckey
 void info(){
 
     //Clear screen
@@ -168,7 +169,7 @@ void info(){
     while(LCD.Touch(&x, &y)){}
 }
 
-//Display credits until touch + release
+//Display credits until touch + release - Written by David Stuckey
 void credits(){
     
     //Clear screen
