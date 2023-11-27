@@ -25,9 +25,9 @@ void Player::update(){
         vx = 2;
         dir = 1;
     }
-
+    
     //If player is falling, disable jump
-    if(vy > g){
+    if(vy > 1){
         jumpAllowed = false;
     }
 
