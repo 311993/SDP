@@ -41,7 +41,6 @@ int Game::update(){
     player.update();
 
     scrollScreen();
-    printf("%d\n", cameraX);
     t++;
     //int x,y;
     return 0; //LCD.Touch(&x, &y);
@@ -52,7 +51,7 @@ void Game::drawTile(int x, int y){
     
     //Draw Base with alternating colors
     LCD.SetFontColor(LCD.White);
-    if((x+y)%40 == 0){LCD.SetFontColor(LCD.Gray);}
+    if((x - cameraX + y)%40 == 0){LCD.SetFontColor(LCD.Gray);}
     LCD.FillRectangle(x,y,20,20);
 
     //Draw brick-like grid

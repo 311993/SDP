@@ -27,6 +27,11 @@ void Player::update(){
     }
 
     //Determine whether player is jumping, if allowed
+
+    if(vy > g){
+        jumpAllowed = false;
+    }
+
     if(LCD.KeyState(TK_UP) && jumpAllowed){
         vy = -4;
         jumpAllowed = false;
@@ -49,16 +54,25 @@ void Player::update(){
 
 //Draw player image at x,y coordinates with given x offset - Written by David Stuckey
 void Player::draw(int offset){
+    
+    //Body
     LCD.SetFontColor(LCD.Blue);
     LCD.FillRectangle(x + offset,y,w,h);
 
+    //Eyes
     LCD.SetFontColor(LCD.White);
     LCD.FillCircle(x + offset + 5 + dir, y + 6, 4);
     LCD.FillCircle(x + offset + 14 + dir, y + 6, 4);
 
+    //Pupils
     LCD.SetFontColor(LCD.Black);
     LCD.FillCircle(x + offset + 5 + 2*dir, y + 6, 2);
     LCD.FillCircle(x + offset + 14 + 2*dir, y + 6, 2);
+
+    //Mouth
+    LCD.FillCircle(x + offset + 7 + 2*dir, y + 15, 2);
+    LCD.FillCircle(x + offset + 13 + 2*dir, y + 15, 2);
+    LCD.FillRectangle(x + offset + 7 + 2*dir, y + 13, 6, 5);
 
 }
 

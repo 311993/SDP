@@ -1,8 +1,5 @@
 #include "entity.h"
 
-//Define gravity strength 
-#define g 0.2
-
 //Construct entity at given x,y position and w,h size - Written by David Stuckey
 Entity::Entity(int x, int y, int w, int h) : x{x}, y{y}, w{w}, h{h} {
     vx = 0;

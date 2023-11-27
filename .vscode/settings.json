@@ -1,6 +1,8 @@
 {
     "files.associations": {
         "list": "cpp",
-        "vector": "cpp"
+        "vector": "cpp",
+        "cstdlib": "cpp",
+        "cmath": "cpp"
     }
 }

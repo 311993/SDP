@@ -1,6 +1,10 @@
 #pragma once
 #include "FEHLCD.h"
 #include "tigr.h"
+#include "math.h"
+
+//Define gravity strength 
+#define g 0.2
 
 //Class representing a game object with position and velocity - Header written by David Stuckey
 class Entity{
@@ -37,6 +41,8 @@ class Enemy : public Entity{
 //Class representing a game object with position and velocity 
 //that disappears on collision with the player - Header written by David Stuckey
 class Item : public Entity{
+    private:
+        int type;
     public:
         Item(int x, int y, int w, int h);
         Item();
