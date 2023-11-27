@@ -19,4 +19,10 @@ class Game{
     public:
         explicit Game();
         int update();
+        void drawTile();
+        void collideTile();
+        void cullEntities();
+        void scrollScreen();
+        void saveStats();
+        void displayGameEnd(int condition);
 };

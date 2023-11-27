@@ -25,3 +25,34 @@ void Entity::draw(){
     LCD.SetFontColor(LCD.Green);
     LCD.FillRectangle(x,y,w,h);
 }
+
+int Entity::isKillFlagged(){
+    return 0;
+}
+
+void Entity::kill(){
+}
+
+bool Entity::isColliding(int x, int y, int w, int h){
+    return false;
+}
+
+bool Entity::isColliding(Entity){
+    return false;
+}
+
+int Entity::getX(){
+
+}
+
+int Entity::getY(){
+
+}
+
+int Entity::getW(){
+
+}
+
+int Entity::getH(){
+
+}

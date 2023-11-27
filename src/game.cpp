@@ -40,3 +40,27 @@ int Game::update(){
     t++;
     return 0;
 }
+
+void Game::drawTile(){
+
+}
+
+void Game::collideTile(){
+
+}
+
+void Game::cullEntities(){
+
+}
+
+void Game::scrollScreen(){
+
+}
+
+void Game::saveStats(){
+
+}
+
+void Game::displayGameEnd(int condition){
+
+}
