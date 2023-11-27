@@ -68,13 +68,6 @@ int main(){
             LCD.WriteAt(buttons[i], SCREEN_WIDTH/2 - strlen(buttons[i])*6.0, topY + 4);
 
         }
-        
-        /*//Draw temp grid
-        for(int i = 0; i < 8; i++){
-            LCD.SetFontColor(LCD.Red);
-            LCD.DrawVerticalLine(i*40 + 20, 0, 240);
-            LCD.DrawHorizontalLine(i*40 + 20, 0, 320);
-        }*/
 
         //Wait for touch + release
         int x,y;

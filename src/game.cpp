@@ -28,12 +28,8 @@ int Game::update(){
      for(int j = 0; j < 12; j++){
         for(int i = cameraX/-20 + 1; i < cameraX/-20 + 16; i++){
             if(tiles[j][i] > 0){
-                
-                LCD.SetFontColor(LCD.White);
-                if(i%2 == 1){LCD.SetFontColor(LCD.Blue);}
                 drawTile(i*20 + cameraX, j*20);
-
-                player.collide(i*20,j*20,20,20);
+                collideTile(i*20, j*20);                
             }
         }
     }
@@ -44,15 +40,6 @@ int Game::update(){
     //Update player
     player.update();
 
-    /*LCD.SetFontColor(LCD.Black);
-    LCD.WriteAt("Play Game Here",120, 80);
-    LCD.WriteAt("(Touch to return to menu)",20, 104);*/
-
-    if(LCD.KeyState('W')){LCD.WriteLine('W');}
-    else if(LCD.KeyState('A')){LCD.WriteLine('A');}
-    else if(LCD.KeyState('S')){LCD.WriteLine('S');}
-    else if(LCD.KeyState('D')){LCD.WriteLine('D');}    
-
     scrollScreen();
     printf("%d\n", cameraX);
     t++;
@@ -60,9 +47,15 @@ int Game::update(){
     return 0; //LCD.Touch(&x, &y);
 }
 
+//Draw tile image at given x and y coordinate - Written by David Stuckey
 void Game::drawTile(int x, int y){
+    
+    //Draw Base with alternating colors
+    LCD.SetFontColor(LCD.White);
+    if((x+y)%40 == 0){LCD.SetFontColor(LCD.Gray);}
     LCD.FillRectangle(x,y,20,20);
 
+    //Draw brick-like grid
     LCD.SetFontColor(LCD.Black);
     
     for(int j = 0; j < 4; j++){
@@ -74,19 +67,19 @@ void Game::drawTile(int x, int y){
     }
 }
 
-void Game::collideTile(){
+void Game::collideTile(int x, int y){
+    player.collide(x,y,20,20);
+}
+
+void Game::collideEnemy(Enemy e){
 
 }
 
-void Game::collideEnemy(){
+void Game::collideProjectile(Projectile p){
 
 }
 
-void Game::collideProjectile(){
-
-}
-
-void Game::collideItem(){
+void Game::collideItem(Item m){
 
 }
 
@@ -94,12 +87,17 @@ void Game::cullEntities(){
 
 }
 
+//Calculate amount to scroll screen to keep player in center, mask screen edges to hide artifacting - Written by David Stuckey
 void Game::scrollScreen(){
+
+    //Calculate screen scrolling to keep player centered
     cameraX = 160 - player.getX() - 10;
 
+    //Limit scroll to prevent drawing beyond limits of tile array
     if(cameraX > 0){ cameraX = 0;}
-    if(cameraX < -20*128){cameraX = -20*128;}
+    if(cameraX < -20*120){cameraX = -20*120;}
 
+    //Mask screen edges to hide scrolling artifacts
     LCD.SetFontColor(LCD.Black);
     LCD.FillRectangle(0,0,20,240);
     LCD.FillRectangle(300,0,20,240);
