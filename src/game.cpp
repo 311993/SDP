@@ -11,7 +11,7 @@ Game::Game(){
 
     t = 0;
     cameraX  = 0;
-    player = Entity(40, 0, 20, 20);
+    player = Player(40, 0, 20, 20);
 }
 
 int Game::update(){
@@ -24,15 +24,19 @@ int Game::update(){
     
      for(int j = 0; j < 12; j++){
         for(int i = 0; i < 16; i++){
-            tiles[j][i] > 0 ? LCD.FillRectangle(i*20, j*20, 20, 20): Sleep(0);
+            if(tiles[j][i] > 0){
+                LCD.FillRectangle(i*20, j*20, 20, 20);
+
+                player.collide(i*20,j*20,20,20);
+            }
         }
     }
 
-    //Update player
-    player.update();
-
     //Draw Player
     player.draw();
+
+    //Update player
+    player.update();
 
     LCD.SetFontColor(LCD.Black);
     LCD.WriteAt("Play Game Here",120, 80);
@@ -43,9 +47,10 @@ int Game::update(){
     else if(LCD.KeyState('S')){LCD.WriteLine('S');}
     else if(LCD.KeyState('D')){LCD.WriteLine('D');}    
 
+    scrollScreen();
     t++;
-    int x,y;
-    return LCD.Touch(&x, &y);
+    //int x,y;
+    return 0; //LCD.Touch(&x, &y);
 }
 
 void Game::drawTile(){

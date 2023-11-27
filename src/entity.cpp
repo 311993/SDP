@@ -20,8 +20,6 @@ void Entity::update(){
     y += vy;
 
     vy += g;
-
-    if( y + h > 240){y = 240 - h;}
 }
 
 void Entity::draw(){
@@ -36,12 +34,36 @@ int Entity::isKillFlagged(){
 void Entity::kill(){
 }
 
-bool Entity::isColliding(int x, int y, int w, int h){
-    return false;
+bool Entity::isColliding(int x2, int y2, int w2, int h2){
+    return (x2 < x + h && x2 + w2 > x && y2 < y + h && y2 + h2 > y);
 }
 
 bool Entity::isColliding(Entity){
     return false;
+}
+
+void Entity::collide(int x2, int y2, int w2, int h2){
+    if(isColliding(x2, y2, w2, h2)){
+        if(prevX < x2 + w2 && prevX + w > x2){
+            if(prevY <= y2){
+                y = y2 - h;
+            }else{
+                y = y2 + h2;
+            }
+
+            vy = 0;
+        }
+
+         if(prevY < y2 + h2 && prevY + h > y2){
+            if(prevX <= x2){
+                x = x2 - w;
+            }else{
+                x = x2 + x2;
+            }
+
+            vx = 0;
+        }
+    }
 }
 
 int Entity::getX(){

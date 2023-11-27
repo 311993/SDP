@@ -42,12 +42,15 @@ int main(){
         LCD.WriteAt("DASH", SCREEN_WIDTH/2 - strlen("DASH")*6, 48);
 
         //Draw shapes
+        //Square
         LCD.SetFontColor(LCD.Blue);
         LCD.FillRectangle(100,30, 20,20);
         
+        //Circle
         LCD.SetFontColor(LCD.Red);
         LCD.FillCircle(210, 20, 10);
 
+        //Triangle
         LCD.SetFontColor(LCD.Yellow);
         for(int i = 0; i < 21; i++){
             LCD.DrawLine(210 + i/2, 60 - i, 231 -i/2, 60 -i);
@@ -95,6 +98,7 @@ int main(){
 //Start a new game, and update game object until game ends - Written by David Stuckey
 int runGame(Game gameScreen){
 
+    //Set initial game background
     LCD.SetBackgroundColor(192 + 256*128 + 256*256*128);
    
     //Run until game update returns a non-zero value (the game ends)
@@ -102,9 +106,7 @@ int runGame(Game gameScreen){
         Sleep(20);
     }
 
-    LCD.SetBackgroundColor(LCD.Black);
-    LCD.Clear();
-
+    //Wait for touch release
     int x,y;
     while(LCD.Touch(&x,&y)){}
 

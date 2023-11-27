@@ -15,7 +15,7 @@ class Game{
         vector<Enemy> enemies;
         vector<Item> items;
         vector<Projectile> projs;
-        Entity player;
+        Player player;
     
     public:
         explicit Game();

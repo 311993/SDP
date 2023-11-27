@@ -1,9 +1,10 @@
 #pragma once
 #include "FEHLCD.h"
+#include "tigr.h"
 
 //Class representing a game object with position and velocity - Header written by David Stuckey
 class Entity{
-    private:
+    protected:
         int x,y,w,h, prevX, prevY, killFlag;
         float vx, vy;
         bool grav;
@@ -14,8 +15,9 @@ class Entity{
         void draw();
         int isKillFlagged();
         void kill();
-        bool isColliding(int x, int y, int w, int h);
+        bool isColliding(int x2, int y2, int w2, int h2);
         bool isColliding(Entity);
+        void collide(int x2, int y2, int w2, int h2);
         int getX(), getY(), getW(), getH();
 };
 
@@ -57,13 +59,15 @@ class Projectile : public Entity{
 //that can be controlled by the player with keyboard input- Header written by David Stuckey
 class Player : public Entity{
     private:
-        int health, score;
+        int health, score, dir;
+        bool jumpAllowed;
     public:
         Player(int x, int y, int w, int h);
         Player();
         void update();
         void draw();
         void setKill(int condition);
+        void collide(int x2, int y2, int w2, int h2);
         void healthMinus(), healthPlus();
         int getScore();
         void setScore();
