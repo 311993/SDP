@@ -70,5 +70,5 @@ class Player : public Entity{
         void collide(int x2, int y2, int w2, int h2);
         void healthMinus(), healthPlus();
         int getScore();
-        void setScore();
+        void changeScore(int points);
 };
