@@ -20,7 +20,7 @@ class Game{
     public:
         explicit Game();
         int update();
-        void drawTile();
+        void drawTile(int x, int y);
         void collideTile();
         void collideEnemy();
         void collideProjectile();

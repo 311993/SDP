@@ -12,7 +12,7 @@ class Entity{
         Entity(int x, int y, int w, int h);
         Entity();
         void update();
-        void draw();
+        void draw(int offset);
         int isKillFlagged();
         void kill();
         bool isColliding(int x2, int y2, int w2, int h2);
@@ -31,7 +31,7 @@ class Enemy : public Entity{
         Enemy(int x, int y, int w, int h);
         Enemy();
         void update();
-        void draw();
+        void draw(int offset);
 };
 
 //Class representing a game object with position and velocity 
@@ -41,7 +41,7 @@ class Item : public Entity{
         Item(int x, int y, int w, int h);
         Item();
         void update();
-        void draw();
+        void draw(int offset);
 };
 
 //Class representing a game object with position and velocity 
@@ -52,7 +52,7 @@ class Projectile : public Entity{
         Projectile(int x, int y, int w, int h);
         Projectile();
         void update();
-        void draw();
+        void draw(int offset);
 };
 
 //Class representing a game object with position and velocity 
@@ -65,7 +65,7 @@ class Player : public Entity{
         Player(int x, int y, int w, int h);
         Player();
         void update();
-        void draw();
+        void draw(int offset);
         void setKill(int condition);
         void collide(int x2, int y2, int w2, int h2);
         void healthMinus(), healthPlus();

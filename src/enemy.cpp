@@ -15,6 +15,6 @@ void Enemy::update(){
 
 }
 
-void Enemy::draw(){
+void Enemy::draw(int offset){
 
 }

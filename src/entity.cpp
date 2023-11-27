@@ -22,9 +22,9 @@ void Entity::update(){
     vy += g;
 }
 
-void Entity::draw(){
+void Entity::draw(int offset){
     LCD.SetFontColor(LCD.Green);
-    LCD.FillRectangle(x,y,w,h);
+    LCD.FillRectangle(x + offset,y,w,h);
 }
 
 int Entity::isKillFlagged(){
@@ -58,7 +58,7 @@ void Entity::collide(int x2, int y2, int w2, int h2){
             if(prevX <= x2){
                 x = x2 - w;
             }else{
-                x = x2 + x2;
+                x = x2 + w2;
             }
 
             vx = 0;
@@ -67,17 +67,17 @@ void Entity::collide(int x2, int y2, int w2, int h2){
 }
 
 int Entity::getX(){
-
+    return x;
 }
 
 int Entity::getY(){
-
+    return y;
 }
 
 int Entity::getW(){
-
+    return w;
 }
 
 int Entity::getH(){
-
+    return h;
 }

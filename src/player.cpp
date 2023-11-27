@@ -29,17 +29,17 @@ void Player::update(){
     Entity::update();
 }
 
-void Player::draw(){
+void Player::draw(int offset){
     LCD.SetFontColor(LCD.Blue);
-    LCD.FillRectangle(x,y,w,h);
+    LCD.FillRectangle(x + offset,y,w,h);
 
     LCD.SetFontColor(LCD.White);
-    LCD.FillCircle(x + 5 + dir, y + 6, 4);
-    LCD.FillCircle(x + 14 + dir, y + 6, 4);
+    LCD.FillCircle(x + offset + 5 + dir, y + 6, 4);
+    LCD.FillCircle(x + offset + 14 + dir, y + 6, 4);
 
     LCD.SetFontColor(LCD.Black);
-    LCD.FillCircle(x + 5 + 2*dir, y + 6, 2);
-    LCD.FillCircle(x + 14 + 2*dir, y + 6, 2);
+    LCD.FillCircle(x + offset + 5 + 2*dir, y + 6, 2);
+    LCD.FillCircle(x + offset + 14 + 2*dir, y + 6, 2);
 
 }
 

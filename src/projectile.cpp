@@ -16,6 +16,6 @@ void Projectile::update(){
 
 }
 
-void Projectile::draw(){
+void Projectile::draw(int offset){
     
 }

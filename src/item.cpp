@@ -12,6 +12,6 @@ void update(){
 
 }
 
-void draw(){
+void draw(int offset){
 
 }
