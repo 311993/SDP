@@ -10,6 +10,7 @@ Game::Game(){
     }
 
     t = 0;
+    cameraX  = 0;
     player = Entity(40, 0, 20, 20);
 }
 
@@ -33,13 +34,18 @@ int Game::update(){
     //Draw Player
     player.draw();
 
+    LCD.SetFontColor(LCD.Black);
+    LCD.WriteAt("Play Game Here",120, 80);
+    LCD.WriteAt("(Touch to return to menu)",20, 104);
+
     if(LCD.KeyState('W')){LCD.WriteLine('W');}
     else if(LCD.KeyState('A')){LCD.WriteLine('A');}
     else if(LCD.KeyState('S')){LCD.WriteLine('S');}
     else if(LCD.KeyState('D')){LCD.WriteLine('D');}    
 
     t++;
-    return 0;
+    int x,y;
+    return LCD.Touch(&x, &y);
 }
 
 void Game::drawTile(){

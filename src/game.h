@@ -1,9 +1,8 @@
 #pragma once
 
 #include "entity.h"
-#include "FEHLCD.h"
 #include "FEHUtility.h"
-#include "list"
+#include "vector"
 
 using namespace std;
 
@@ -13,9 +12,9 @@ class Game{
         int tiles[12][128];
         int cameraX, t;
         
-        list<Enemy> enemies;
-        list<Item> items;
-        list<Projectile> projs;
+        vector<Enemy> enemies;
+        vector<Item> items;
+        vector<Projectile> projs;
         Entity player;
     
     public:

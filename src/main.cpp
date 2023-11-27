@@ -1,5 +1,6 @@
 #include "game.h"
 #include "iostream"
+#include "string.h"
 
 //Define size constants
 #define SCREEN_WIDTH 320
@@ -12,17 +13,19 @@
 #define BUTTON_SEPARATION 8
 #define BUTTON_WIDTH 120
 
+using namespace std;
+
 void stats();
 void info();
 void credits();
-void runGame();
-
-
-using namespace std;
+int runGame(Game gameScreen);
 
 //Run main menu, allow user to enter game, info, stats, or credits screen - Written by David Stuckey
 int main(){
     
+    //Create game object
+    Game gameScreen = Game();
+
     //Enumerate menu buttons
     const char buttons[][9] = {"Play", "Info", "Stats", "Credits"};
 
@@ -80,7 +83,7 @@ int main(){
         //Determine which button field the touch was in and run appropriate command
         if(x > SCREEN_WIDTH/2 - BUTTON_WIDTH/2  && x < SCREEN_WIDTH/2 + BUTTON_WIDTH/2){
             switch(3 + (y - SCREEN_HEIGHT + 4 - BUTTON_SEPARATION + BUTTON_HEIGHT/2) / (BUTTON_HEIGHT + BUTTON_SEPARATION)){
-                case 0: runGame();  break;
+                case 0: runGame(gameScreen);  break;
                 case 1: info();     break;
                 case 2: stats();    break;
                 case 3: credits();  break;
@@ -90,15 +93,21 @@ int main(){
 }
 
 //Start a new game, and update game object until game ends - Written by David Stuckey
-void runGame(){
-    Game game = Game();
+int runGame(Game gameScreen){
 
     LCD.SetBackgroundColor(192 + 256*128 + 256*256*128);
-
+   
     //Run until game update returns a non-zero value (the game ends)
-    while (game.update() == 0) {
+    while (gameScreen.update() == 0) {
         Sleep(20);
     }
+
+    LCD.SetBackgroundColor(LCD.Black);
+    LCD.Clear();
+
+    int x,y;
+    while(LCD.Touch(&x,&y)){}
+
 }
 
 //Display stats until touch + release - Written by David Stuckey
