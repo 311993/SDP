@@ -26,12 +26,12 @@ void Player::update(){
         dir = 1;
     }
 
-    //Determine whether player is jumping, if allowed
-
+    //If player is falling, disable jump
     if(vy > g){
         jumpAllowed = false;
     }
 
+    //Determine whether player is jumping, if allowed
     if(LCD.KeyState(TK_UP) && jumpAllowed){
         vy = -4;
         jumpAllowed = false;
