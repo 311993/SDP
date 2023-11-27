@@ -23,6 +23,9 @@ class Game{
         int update();
         void drawTile();
         void collideTile();
+        void collideEnemy();
+        void collideProjectile();
+        void collideItem();
         void cullEntities();
         void scrollScreen();
         void saveStats();

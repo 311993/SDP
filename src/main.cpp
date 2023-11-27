@@ -36,7 +36,19 @@ int main(){
         //Write Title
         LCD.SetFontColor(LCD.White);
         LCD.WriteAt("SHAPE", SCREEN_WIDTH/2 - strlen("SHAPE")*6, 24);
-        LCD.WriteAt("QUEST", SCREEN_WIDTH/2 - strlen("QUEST")*6, 48);
+        LCD.WriteAt("DASH", SCREEN_WIDTH/2 - strlen("DASH")*6, 48);
+
+        //Draw shapes
+        LCD.SetFontColor(LCD.Blue);
+        LCD.FillRectangle(100,30, 20,20);
+        
+        LCD.SetFontColor(LCD.Red);
+        LCD.FillCircle(210, 20, 10);
+
+        LCD.SetFontColor(LCD.Yellow);
+        for(int i = 0; i < 21; i++){
+            LCD.DrawLine(210 + i/2, 60 - i, 231 -i/2, 60 -i);
+        }
 
         //Draw buttons
         for(int i = 0; i < sizeof(buttons) / sizeof(buttons[0]); i++){

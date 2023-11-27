@@ -50,6 +50,18 @@ void Game::collideTile(){
 
 }
 
+void Game::collideEnemy(){
+
+}
+
+void Game::collideProjectile(){
+
+}
+
+void Game::collideItem(){
+
+}
+
 void Game::cullEntities(){
 
 }
