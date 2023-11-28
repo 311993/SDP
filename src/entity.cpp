@@ -27,7 +27,7 @@ void Entity::update(){
 }
 
 //Draw default entity image at x,y coordinates with a given x offset - Written by David Stuckey
-void Entity::draw(int offset){
+void Entity::draw(FEHImage  imgs[], int offset){
     LCD.SetFontColor(LCD.White);
     LCD.FillRectangle(x + offset,y,w,h);
 }

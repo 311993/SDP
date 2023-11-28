@@ -15,6 +15,6 @@ void Enemy::update(){
 
 }
 
-void Enemy::draw(int offset){
+void Enemy::draw(FEHImage  imgs[], int offset){
 
 }

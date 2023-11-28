@@ -12,6 +12,6 @@ void update(){
 
 }
 
-void draw(int offset){
+void draw(FEHImage imgs[], int offset){
 
 }

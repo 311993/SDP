@@ -16,6 +16,6 @@ void Projectile::update(){
 
 }
 
-void Projectile::draw(int offset){
+void Projectile::draw(FEHImage imgs[], int offset){
     
 }

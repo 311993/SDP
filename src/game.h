@@ -2,6 +2,7 @@
 
 #include "entity.h"
 #include "FEHUtility.h"
+#include "stdio.h"
 #include "vector"
 
 using namespace std;
@@ -16,9 +17,12 @@ class Game{
         vector<Item> items;
         vector<Projectile> projs;
         Player player;
+
+        FEHImage assets[16];
     
     public:
         explicit Game();
+        ~Game();
         int update();
         void drawTile(int x, int y);
         void collideTile(int x, int y);
@@ -28,5 +32,5 @@ class Game{
         void cullEntities();
         void scrollScreen();
         void saveStats();
-        void displayGameEnd(int condition);
+        int displayGameEnd(int condition);
 };
