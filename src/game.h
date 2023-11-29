@@ -31,6 +31,7 @@ class Game{
         void collideItem(Item m);
         void cullEntities();
         void scrollScreen();
+        void drawHUD();
         void saveStats();
         int displayGameEnd(int condition);
 };

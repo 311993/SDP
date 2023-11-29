@@ -7,8 +7,11 @@ Game::Game(){
     try{
         //Open level data file
         FILE *level = fopen("data/level.dat", "r");
+
+        if(level == NULL){throw -1;}
         
         int temp;
+        vector<Enemy> lavas;
         
         //Load in tiles from level data
         for(int i = 0; i < 128; i++){
@@ -20,9 +23,18 @@ Game::Game(){
                 switch(temp){
                     case 1: tiles[j][i] = 1; break;
                     case 2: enemies.push_back(Enemy(i*20,j*20,20,20,0)); break;
+                    case 3: lavas.push_back(Enemy(i*20,j*20,20,20,1)); break;
+                    case 4: /*projectile*/ break;
+                    case 5: /*coin*/ break;
+                    case 6: /*heart*/ break;
+                    case 7: /*flag*/ break;
                 }
             }
         } 
+
+        //Ensures enemies are drawn behind lava
+        enemies.insert(enemies.end(), lavas.begin(), lavas.end());
+        
     }catch(int e){
         //Notify user of failed level import
         printf("Missing or unresolvable level file. Error Code: %d", e);
@@ -49,10 +61,10 @@ Game::Game(){
 
     t = 0;
     cameraX  = 0;
-    player = Player(150, 0, 20, 20);
+    player = Player(150, 20, 20, 20);
 }
 
-//Explicit destructor to prevent mem leaks with images
+//Explicit destructor to prevent mem leaks with images - Written by David Stuckey
 Game::~Game(){
     for(int i = 0; i < 16; i++){
         assets[i].Close();
@@ -91,11 +103,15 @@ int Game::update(){
     player.update();
 
     scrollScreen();
+    drawHUD();
     t++;
-    
+
     int x,y;
     if(t%3 == 0){
-        return LCD.Touch(&x, &y);
+        if(LCD.Touch(&x, &y)){
+            saveStats();
+            return 1;
+        }
     }
     return 0;
 }
@@ -159,8 +175,89 @@ void Game::scrollScreen(){
     LCD.FillRectangle(300,0,20,240);
 }
 
-void Game::saveStats(){
+void Game::drawHUD(){
 
+    LCD.SetFontColor(LCD.Black);
+    LCD.FillRectangle(0,0,320,20);
+    
+    LCD.SetFontColor(LCD.White);
+    char* tString;
+    sprintf(tString, "%02d:%02d", t/3000, (t/50)%60);
+    LCD.WriteAt(tString,240,4);
+}
+
+//Update stats based on player score and time taken - Written by David Stuckey
+void Game::saveStats(){
+    try{
+
+        //Open stats file
+        FILE *data = fopen("data/stats.dat", "r");
+        if(data == NULL){throw -1;}
+
+        //Read in old stats
+        //Format: score 1, score 2, score 3, time 1, time 2, time 3, time last, score last, time 2nd last, score 2nd last
+        int stats[10];
+
+        for(int i = 0; i < 10; i++){
+            fscanf(data, "%d", stats + i);
+        }
+
+        fclose(data);
+
+        //Update high scores
+        if(player.getScore() > stats[2]){
+            stats[2] = player.getScore();
+        }
+
+        if(stats[2] > stats[1]){
+            int temp = stats[2];
+            stats[2] = stats[1];
+            stats[1] = temp;
+        }
+        
+        if(stats[1] > stats[0]){
+            int temp = stats[1];
+            stats[1] = stats[0];
+            stats[0] = temp;
+        }
+
+        //Update low times
+        if(t/50 < stats[5]){
+            stats[5] = t/50;
+        }
+
+        if(stats[5] < stats[4]){
+            int temp = stats[5];
+            stats[5] = stats[4];
+            stats[4] = temp;
+        }
+        
+        if(stats[4] < stats[3]){
+            int temp = stats[4];
+            stats[4] = stats[3];
+            stats[3] = temp;
+        }
+
+        //Update two previous games in record
+        stats[8] = stats[6];
+        stats[9] = stats[7];
+
+        stats[6] = t/50;
+        stats[7] = (player.getScore() > 999 ? 999 : player.getScore());
+
+
+        //Open data file again, this time to write new stats
+        data = fopen("data/stats.dat", "w");
+        if(data == NULL){throw -1;}
+
+        //Update stats in file
+        for(int i = 0; i < 10; i++){
+            fprintf(data, "%d ", stats[i]);
+        }
+
+        fclose(data);
+
+    }catch(int e){}
 }
 
 int Game::displayGameEnd(int condition){

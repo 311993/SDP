@@ -134,10 +134,9 @@ void stats(){
     LCD.WriteAt("3: 001", SCREEN_WIDTH/4 - 12- strlen("3. 000")*6, 120);
     
     //Last completed and current (if applicable) game
-    LCD.SetFontColor(LCD.Gray);
-    LCD.WriteAt("Last Played: 000 | 00:00", SCREEN_WIDTH/2 - strlen("Last Played: 000 | 00:00")*6, 156);
     LCD.SetFontColor(LCD.Green);
-    LCD.WriteAt("In Progress: 000 | 00:00", SCREEN_WIDTH/2 - strlen("In Progress: 000 | 00:00")*6, 180);
+    LCD.WriteAt("Last Played: 000 | 00:00", SCREEN_WIDTH/2 - strlen("Last Played: 000 | 00:00")*6, 156);
+    LCD.WriteAt("           : 000 | 00:00", SCREEN_WIDTH/2 - strlen("           : 000 | 00:00")*6, 180);
     
     LCD.SetFontColor(LCD.Gray);
     LCD.WriteAt("(Touch to Return to Menu)", SCREEN_WIDTH/2 - strlen("(Touch to Return to Menu)")*6, 216);
@@ -206,6 +205,7 @@ void credits(){
     LCD.WriteAt("Olivia Smith", 24, 72);
     LCD.WriteAt("David Stuckey",24, 96);
     LCD.WriteAt("FEH Proteus Docs", 24, 156);
+    LCD.WriteAt("Cplusplus.com", 24, 180);
 
     LCD.SetFontColor(LCD.Gray);
     LCD.WriteAt("(Touch to Return to Menu)", SCREEN_WIDTH/2 - strlen("(Touch to Return to Menu)")*6, 216);
