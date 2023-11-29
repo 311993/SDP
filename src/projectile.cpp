@@ -1,19 +1,21 @@
 #include "entity.h"
 
-Projectile::Projectile(int x, int y, int w, int h, float vx, float vy){
-
+//Construct projectile with given position and size - Written by David Stuckey
+Projectile::Projectile(int x, int y, int w, int h) : Entity(x,y,w,h){
+    created = false;
+    grav = false;
 }
 
-Projectile::Projectile(int x, int y, int w, int h){
+//Construct default projectile - Written by David Stuckey
+Projectile::Projectile() : Projectile(0,0,20,20){}
 
-}
+//One-time velocity set to follow a line towards player position - Written by David Stuckey
+void Projectile::create(int px, int py){
+    created = true;
 
-Projectile::Projectile(){
-
-}
-
-void Projectile::update(){
-
+    float angle = atan2(py-y,px-x);
+    vx = 4*cos(angle);
+    vy = 4*sin(angle);
 }
 
 //Draw projectile image at x,y coordinates with given x offset - Written by David Stuckey
@@ -23,4 +25,9 @@ void Projectile::draw(FEHImage  imgs[], int offset){
     }else{
         imgs[5].Draw(x + offset, y);
     }
+}
+
+//Get created/pre-created status - Written by David Stuckey
+bool Projectile::isCreated(){
+    return created;
 }

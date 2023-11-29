@@ -1,6 +1,6 @@
 #include "entity.h"
 
-//Construct entity with given position, size, and type - Written by David Stuckey
+//Construct item with given position, size, and type - Written by David Stuckey
 Item::Item(int x, int y, int w, int h, int type) : Entity(x,y,w,h){
     this->type = type;
 }
@@ -23,4 +23,9 @@ void Item::draw(FEHImage imgs[], int offset){
         case 2: imgs[9].Draw(x + offset, y); /*Flag*/   break;
     }
 
+}
+
+//Get type of item - Written by David Stuckey
+int Item::getType(){
+    return type;
 }

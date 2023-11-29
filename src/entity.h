@@ -51,24 +51,27 @@ class Item : public Entity{
         Item();
         void update();
         void draw(FEHImage  imgs[], int offset);
+        int getType();
 };
 
 //Class representing a game object with position and velocity 
 //that disappears when it leaves the screen or on contact with the player or a tile- Header written by David Stuckey
 class Projectile : public Entity{
+    private:
+        bool created;
     public:
-        Projectile(int x, int y, int w, int h, float vx, float vy);
         Projectile(int x, int y, int w, int h);
         Projectile();
-        void update();
+        void create(int x, int y);
         void draw(FEHImage  imgs[], int offset);
+        bool isCreated();
 };
 
 //Class representing a game object with position and velocity 
 //that can be controlled by the player with keyboard input- Header written by David Stuckey
 class Player : public Entity{
     private:
-        int health, score, dir;
+        int health, score, dir, iframes;
         bool jumpAllowed;
     public:
         Player(int x, int y, int w, int h);
@@ -77,6 +80,7 @@ class Player : public Entity{
         void draw(FEHImage  imgs[], int offset);
         void setKill(int condition);
         void collide(int x2, int y2, int w2, int h2);
+        void collide(Entity e);
         void healthMinus(), healthPlus();
         int getScore();
         int getHealth();

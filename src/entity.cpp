@@ -5,6 +5,7 @@ Entity::Entity(int x, int y, int w, int h) : x{x}, y{y}, w{w}, h{h} {
     vx = 0;
     vy = 0;
     grav = 1;
+    killFlag = 0;
 }
 
 //Construct default entity - Written by David Stuckey

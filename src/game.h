@@ -26,9 +26,9 @@ class Game{
         int update();
         void drawTile(int x, int y);
         void collideTile(int x, int y);
-        void collideEnemy(Enemy e);
-        void collideProjectile(Projectile p);
-        void collideItem(Item m);
+        void collideEnemy(Enemy *e);
+        void collideProjectile(Projectile *p);
+        void collideItem(Item *m);
         void cullEntities();
         void scrollScreen();
         void drawHUD();

@@ -5,6 +5,7 @@ Player::Player(int x, int y, int w, int h) : Entity(x,y,w,h){
     dir = 1;
     health = 3;
     score = 0;
+    iframes = 50;
 }
 
 //Create default player object - Written by David Stuckey
@@ -40,9 +41,9 @@ void Player::update(){
     //Superclass update - update position/apply gravity
     Entity::update();
 
-    //Win condition
-    if(x > 113.5*20){
-        setKill(2);
+    //Decrement invulnerability timer
+    if(iframes > -1){
+        iframes --;
     }
 
     //Lose conditions
@@ -55,10 +56,17 @@ void Player::update(){
 //Draw player image at x,y coordinates with given x offset - Written by David Stuckey
 void Player::draw(FEHImage  imgs[], int offset){
     
+    //Draw player 
     if(dir > 0){
         imgs[0].Draw(x + offset, y);
     }else{
         imgs[1].Draw(x + offset, y);
+    }
+
+    //Draw flashing invulnerability aura
+    if(iframes %2 == 0){
+        LCD.SetFontColor(LCD.Red);
+        LCD.DrawRectangle(x + offset,y, 20,20);
     }
 }
 
@@ -79,9 +87,12 @@ void Player::setKill(int condition){
     killFlag = condition;
 }
 
-//Decrement player health - Written by David Stuckey
+//Decrement player health, force 50 frames between health decreases - Written by David Stuckey
 void Player::healthMinus(){
-    health--;
+    if(iframes < 0){
+        iframes = 50;
+        health--;
+    }
 } 
 
 //Increment player health - Written by David Stuckey

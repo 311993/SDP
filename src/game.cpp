@@ -23,7 +23,7 @@ Game::Game(){
                     /*Tile*/    case 1: tiles[j][i] = 1; break;
                     /*Enemy*/   case 2: enemies.push_back(Enemy(i*20,j*20,20,20,0)); break;
                     /*Lava*/    case 3: lavas.push_back(Enemy(i*20,j*20,20,20,1)); break;
-                    /*Proj*/    case 4: projs.push_back(Projectile(i*20,j*20,20,20,0,0)); break;
+                    /*Proj*/    case 4: projs.push_back(Projectile(i*20,j*20,20,20)); break;
                     /*Coin*/    case 5: items.push_back(Item(i*20,j*20,20,20,0)); break;
                     /*Heart*/   case 6: items.push_back(Item(i*20,j*20,20,20,1)); break;
                     /*Flag*/    case 7: items.push_back(Item(i*20,j*20,20,40,2)); break;
@@ -70,6 +70,7 @@ Game::~Game(){
     }
 }
 
+//Update game screen - Written by David Stuckey
 int Game::update(){
     
     //Clear Screen
@@ -90,6 +91,7 @@ int Game::update(){
         if(items.at(i).getX() + cameraX >= 0 && items.at(i).getX() + cameraX < 300 && items.at(i).getY() <= 240){
             items.at(i).draw(assets, cameraX);
             items.at(i).update();
+            collideItem(&items.at(i));
         }
     }
 
@@ -98,6 +100,29 @@ int Game::update(){
         if(enemies.at(i).getX() + cameraX >= 0 && enemies.at(i).getX() + cameraX < 300 && enemies.at(i).getY() <= 240){
             enemies.at(i).draw(assets, cameraX);
             enemies.at(i).update();
+            collideEnemy(&enemies.at(i));
+        }
+    }
+
+    //For each projectile in the vector, if it is onscreen, draw and update
+    for(int i = 0; i < projs.size(); i++){
+        if(projs.at(i).getX() + cameraX >= 0 && projs.at(i).getX() + cameraX < 300 && projs.at(i).getY() <= 240 && projs.at(i).getY() >= 0){
+            
+            //Set projectile velocity when it first enters the screen
+            if(!projs.at(i).isCreated()){
+                projs.at(i).create(player.getX(), player.getY());
+            }
+
+            projs.at(i).draw(assets, cameraX);
+            projs.at(i).update();
+            collideProjectile(&projs.at(i));
+
+        }else{
+            
+            //If the projectile leaves the screen, kill-flag it
+            if(projs.at(i).isCreated()){
+                projs.at(i).kill();
+            }
         }
     }
 
@@ -106,6 +131,9 @@ int Game::update(){
 
     //Update player
     player.update();
+
+    //Remove entities from itme/projectile vectors if they are kill-flagged
+    cullEntities();
 
     //Scroll screen
     scrollScreen();
@@ -155,20 +183,57 @@ void Game::collideTile(int x, int y){
     }
 }
 
-void Game::collideEnemy(Enemy e){
-
+//Damage player if enemy is intersecting - Written by David Stuckey
+void Game::collideEnemy(Enemy *e){
+    if(player.isColliding(*e)){
+        player.healthMinus();
+    }
 }
 
-void Game::collideProjectile(Projectile p){
-
+//Damage player an kill projectile if intersecting - Written by David Stuckey
+void Game::collideProjectile(Projectile *p){
+    if(player.isColliding(*p)){
+        player.healthMinus();
+        p->kill();
+    }
 }
 
-void Game::collideItem(Item m){
+//Alter player state if intersecting item - Written by David Stuckey
+void Game::collideItem(Item *m){
+    if(player.isColliding(*m)){
+        switch(m->getType()){
+            case 1:
+                player.healthPlus();
+            case 0:
+                player.changeScore(10);
+            break;
+            case 2:
+                player.changeScore(100);
+                player.setKill(2);
+            break;
+        }
 
+        m->kill();
+    }
 }
 
+//Remove kill-flagged items and projectiles - Written by David Stuckey
 void Game::cullEntities(){
 
+    //Remove items
+    for(int i = 0; i < items.size(); i++){
+        printf("%d\n", items.at(i).isKillFlagged());
+        if(items.at(i).isKillFlagged()){
+            items.erase(items.begin() + i);   
+        }
+    }
+
+    //Remove projectiles
+    for(int i = 0; i < projs.size(); i++){
+        if(projs.at(i).isKillFlagged()){
+            projs.erase(projs.begin() + i);   
+        }
+    }
 }
 
 //Calculate amount to scroll screen to keep player in center, mask screen edges to hide artifacting - Written by David Stuckey
