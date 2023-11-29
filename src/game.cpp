@@ -3,7 +3,6 @@
 
 //Construct game object and initialize game variables - Written by David Stuckey
 Game::Game(){
-
     try{
         //Open level data file
         FILE *level = fopen("data/level.dat", "r");
@@ -21,23 +20,35 @@ Game::Game(){
                 tiles[j][i] = 0;
 
                 switch(temp){
-                    case 1: tiles[j][i] = 1; break;
-                    case 2: enemies.push_back(Enemy(i*20,j*20,20,20,0)); break;
-                    case 3: lavas.push_back(Enemy(i*20,j*20,20,20,1)); break;
-                    case 4: /*projectile*/ break;
-                    case 5: /*coin*/ break;
-                    case 6: /*heart*/ break;
-                    case 7: /*flag*/ break;
+                    /*Tile*/    case 1: tiles[j][i] = 1; break;
+                    /*Enemy*/   case 2: enemies.push_back(Enemy(i*20,j*20,20,20,0)); break;
+                    /*Lava*/    case 3: lavas.push_back(Enemy(i*20,j*20,20,20,1)); break;
+                    /*Proj*/    case 4: projs.push_back(Projectile(i*20,j*20,20,20,0,0)); break;
+                    /*Coin*/    case 5: items.push_back(Item(i*20,j*20,20,20,0)); break;
+                    /*Heart*/   case 6: items.push_back(Item(i*20,j*20,20,20,1)); break;
+                    /*Flag*/    case 7: items.push_back(Item(i*20,j*20,20,20,2)); break;
                 }
             }
         } 
-
+    
         //Ensures enemies are drawn behind lava
         enemies.insert(enemies.end(), lavas.begin(), lavas.end());
+
+        //Load images
+        assets[0].Open("assets/playerLFEH.pic");
+        assets[1].Open("assets/playerRFEH.pic");
+        assets[2].Open("assets/enemyLFEH.pic");
+        assets[3].Open("assets/enemyRFEH.pic");
+        assets[4].Open("assets/projLFEH.pic");
+        assets[5].Open("assets/projRFEH.pic");
+        assets[6].Open("assets/lavaFEH.pic");
+        assets[7].Open("assets/coinFEH.pic");
+        assets[8].Open("assets/heartFEH.pic");
+        assets[9].Open("assets/finishFEH.pic");
         
     }catch(int e){
-        //Notify user of failed level import
-        printf("Missing or unresolvable level file. Error Code: %d", e);
+        //Notify user of failed import
+        printf("Missing or unresolvable level or image file. Error Code: %d", e);
 
         //Default Level
         for(int j = 0; j < 12; j++){
@@ -46,18 +57,6 @@ Game::Game(){
             }
         } 
     }
-
-    //Load images
-    assets[0].Open("assets/playerLFEH.pic");
-    assets[1].Open("assets/playerRFEH.pic");
-    assets[2].Open("assets/enemyLFEH.pic");
-    assets[3].Open("assets/enemyRFEH.pic");
-    assets[4].Open("assets/projLFEH.pic");
-    assets[5].Open("assets/projRFEH.pic");
-    assets[6].Open("assets/lavaFEH.pic");
-    assets[7].Open("assets/coinFEH.pic");
-    assets[8].Open("assets/heartFEH.pic");
-    assets[9].Open("assets/finishFEH.pic");
 
     t = 0;
     cameraX  = 0;
@@ -102,10 +101,16 @@ int Game::update(){
     //Update player
     player.update();
 
+    //Scroll screen
     scrollScreen();
+    
+    //Draw HUD
     drawHUD();
+    
+    //Increment frame timer
     t++;
 
+    //Touch to exit
     int x,y;
     if(t%3 == 0){
         if(LCD.Touch(&x, &y)){
@@ -136,6 +141,7 @@ void Game::drawTile(int x, int y){
     }
 }
 
+//Prevent player and enemies from entering a tile - Written by David Stuckey
 void Game::collideTile(int x, int y){
     player.collide(x,y,20,20);
     for(int i = 0; i < enemies.size(); i++){
@@ -177,19 +183,23 @@ void Game::scrollScreen(){
     LCD.FillRectangle(0,220,320,20);
 }
 
+//Draw HUD at top of screen to display health, time, and score - Written by David Stuckey
 void Game::drawHUD(){
     
     LCD.SetFontColor(LCD.White);
 
+    //Display time in mm:ss (t is in frames ~ 50th of a second)
     char tString[8];
     sprintf(tString, "%02d:%02d", t/3000, (t/50)%60);
     LCD.WriteAt(tString,240,4);
 
+    //Display score with coin symbol in front
     sprintf(tString, "->%03d", player.getScore());
     LCD.WriteAt(tString,144,4);
     
     assets[7].Draw(122,0);
 
+    //Display as many hearts as the player has
     for(int i = 0; i < player.getHealth(); i++){
         assets[8].Draw(20 + i*20, 0);
     }

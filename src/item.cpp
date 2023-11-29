@@ -1,5 +1,9 @@
 #include "entity.h"
 
+Item::Item(int x, int y, int w, int h, int type){
+    
+}
+
 Item::Item(int x, int y, int w, int h){
     
 }

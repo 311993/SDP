@@ -46,6 +46,7 @@ class Item : public Entity{
     private:
         int type;
     public:
+        Item(int x, int y, int w, int h, int type);
         Item(int x, int y, int w, int h);
         Item();
         void update();

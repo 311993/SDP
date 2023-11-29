@@ -112,6 +112,35 @@ int runGame(){
 //Display stats until touch + release - Written by David Stuckey
 void stats(){
     
+    //Format: score 1, score 2, score 3, time 1, time 2, time 3, time last, score last, time 2nd last, score 2nd last
+    int stats[10];
+
+    try{
+        //Open stats file
+        FILE *data = fopen("data/stats.dat", "r");
+        if(data == NULL){throw -1;}
+
+        //Read in stats
+        for(int i = 0; i < 10; i++){
+            fscanf(data, "%d", stats + i);
+        }
+
+        fclose(data);
+    }catch(int e){}
+
+    //Stringify stats
+    char score[3][16], time[3][16], last[2][32];
+
+    //high scores + low times
+    for(int i = 0; i<3; i++){
+        sprintf(score[i], "%d. %03d", i+1, stats[i]);
+        sprintf(time[i],  "%d. %03d", i+1, stats[i + 3]);
+    }
+
+    //Last two plays
+    sprintf(last[0], "Last Played: %03d | %02d:%02d", stats[7], stats[6]/60, stats[6]%60);
+    sprintf(last[1], "           : %03d | %02d:%02d", stats[9], stats[8]/60, stats[8]%60);    
+
     //Clear screen
     LCD.Clear();
     
@@ -125,18 +154,18 @@ void stats(){
     
     //Records
     LCD.SetFontColor(LCD.White);
-    LCD.WriteAt("1. 99:97", 3*SCREEN_WIDTH/4 - strlen("1. 00:00")*6, 72);
-    LCD.WriteAt("2. 99:98", 3*SCREEN_WIDTH/4 - strlen("2. 00:00")*6, 96);
-    LCD.WriteAt("3: 99:99", 3*SCREEN_WIDTH/4 -strlen("3. 00:00")*6, 120);
+    LCD.WriteAt(time[0], 3*SCREEN_WIDTH/4 - strlen("1. 00:00")*6, 72);
+    LCD.WriteAt(time[1], 3*SCREEN_WIDTH/4 - strlen("2. 00:00")*6, 96);
+    LCD.WriteAt(time[2], 3*SCREEN_WIDTH/4 -strlen("3. 00:00")*6, 120);
 
-    LCD.WriteAt("1. 003", SCREEN_WIDTH/4 - 12 -strlen("1. 000")*6, 72);
-    LCD.WriteAt("2. 002", SCREEN_WIDTH/4 - 12 -strlen("2. 000")*6, 96);
-    LCD.WriteAt("3: 001", SCREEN_WIDTH/4 - 12- strlen("3. 000")*6, 120);
+    LCD.WriteAt(score[0], SCREEN_WIDTH/4 - 12 -strlen("1. 000")*6, 72);
+    LCD.WriteAt(score[1], SCREEN_WIDTH/4 - 12 -strlen("2. 000")*6, 96);
+    LCD.WriteAt(score[2], SCREEN_WIDTH/4 - 12- strlen("3. 000")*6, 120);
     
-    //Last completed and current (if applicable) game
+    //Last two completed games
     LCD.SetFontColor(LCD.Green);
-    LCD.WriteAt("Last Played: 000 | 00:00", SCREEN_WIDTH/2 - strlen("Last Played: 000 | 00:00")*6, 156);
-    LCD.WriteAt("           : 000 | 00:00", SCREEN_WIDTH/2 - strlen("           : 000 | 00:00")*6, 180);
+    LCD.WriteAt(last[0], SCREEN_WIDTH/2 - strlen("Last Played: 000 | 00:00")*6, 156);
+    LCD.WriteAt(last[1], SCREEN_WIDTH/2 - strlen("           : 000 | 00:00")*6, 180);
     
     LCD.SetFontColor(LCD.Gray);
     LCD.WriteAt("(Touch to Return to Menu)", SCREEN_WIDTH/2 - strlen("(Touch to Return to Menu)")*6, 216);
@@ -155,29 +184,29 @@ void info(){
 
     //Header
     LCD.SetFontColor(LCD.Blue);
-    LCD.WriteAt("How to Play:", SCREEN_WIDTH/2 - strlen("How to Play")*6, 12);
+    LCD.WriteAt("How to Play:", 24, 12);
     
     //Write control instructions
     LCD.SetFontColor(LCD.White);
-    LCD.WriteAt("* Left/right arrows or", SCREEN_WIDTH/2 - strlen("* Left/right arrows or")*6, 36);
-    LCD.WriteAt("  A/D keys to move", SCREEN_WIDTH/2 - strlen("  A/D keys to move")*6, 60);
-    LCD.WriteAt("* Up arrow, touch, or ", SCREEN_WIDTH/2 - strlen("* Up arrow, touch, or ")*6, 84);
-    LCD.WriteAt("  spacebar to jump", SCREEN_WIDTH/2 - strlen("  spacebar to jump")*6, 108);
+    LCD.WriteAt("* Left/right arrows or", 12, 42);
+    LCD.WriteAt("  A/D keys to move", 12, 66);
+    LCD.WriteAt("* Up arrow, touch, or ", 12, 90);
+    LCD.WriteAt("  spacebar to jump", 12, 114);
     
     //Write gameplay instructions
-    LCD.WriteAt("* Avoid ", SCREEN_WIDTH/2 - strlen("* Avoid red enemies")*6, 132);
+    LCD.WriteAt("* Avoid ", 12, 138);
     LCD.SetFontColor(LCD.Red);
-    LCD.WriteAt("red enemies", SCREEN_WIDTH/2 + strlen("* Avoid ")*6 - strlen("red enemies")*6, 132);
+    LCD.WriteAt("red enemies",12 + strlen("* Avoid ")*12, 138);
     
     LCD.SetFontColor(LCD.White);
-    LCD.WriteAt("* Collect ", SCREEN_WIDTH/2 - strlen("* Collect yellow coins")*6, 156);
+    LCD.WriteAt("* Collect ", 12, 162);
     LCD.SetFontColor(LCD.Yellow);
-    LCD.WriteAt("yellow coins", SCREEN_WIDTH/2 + strlen("* Collect ")*6 - strlen("yellow coins")*6, 156);
+    LCD.WriteAt("yellow coins", 12 + strlen("* Collect ")*12, 162);
     
     LCD.SetFontColor(LCD.White);
-    LCD.WriteAt("* Heal with ", SCREEN_WIDTH/2 - strlen("* Heal with green energy")*6, 180);
+    LCD.WriteAt("* Heal with ", 12, 186);
     LCD.SetFontColor(LCD.Green);
-    LCD.WriteAt("green energy", SCREEN_WIDTH/2 + strlen("* Heal with ")*6 - strlen("green energy")*6, 180);
+    LCD.WriteAt("green hearts", 12 + strlen("* Heal with ")*12, 186);
     
     LCD.SetFontColor(LCD.Gray);
     LCD.WriteAt("(Touch to Return to Menu)", SCREEN_WIDTH/2 - strlen("(Touch to Return to Menu)")*6, 216);
