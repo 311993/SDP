@@ -20,11 +20,13 @@ void info();
 void credits();
 int runGame();
 
+Game *gameScreen;
+
 //Run main menu, allow user to enter game, info, stats, or credits screen - Written by David Stuckey
 int main(){
     
     //Create game object
-    Game gameScreen = Game();
+    gameScreen = new Game();
 
     //Enumerate menu buttons
     const char buttons[][9] = {"Play", "Info", "Stats", "Credits"};
@@ -86,27 +88,24 @@ int main(){
             }
         }
     }
+
+    //Clear game object
+    gameScreen->~Game();
 }
 
 //Start a new game, and update game object until game ends - Written by David Stuckey
 int runGame(){
 
-    Game gameScreen = Game();
-
+    gameScreen->reset();
     //Set initial game background
     LCD.SetBackgroundColor(192 + 256*128 + 256*256*128);
    
     //Run until game update returns a non-zero value (the game ends)
-    while (gameScreen.update() == 0) {
+    while (gameScreen->update() == 0) {
         Sleep(20);
     }
 
-    gameScreen.~Game();
-
-    //Wait for touch release
-    int x,y;
-    while(LCD.Touch(&x,&y)){}
-
+    Sleep(20);
 }
 
 //Display stats until touch + release - Written by David Stuckey

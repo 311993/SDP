@@ -87,6 +87,11 @@ void Player::setKill(int condition){
     killFlag = condition;
 }
 
+//Get actual killFlag value - Written by David Stuckey
+int Player::getKillFlag(){
+    return killFlag;
+}
+
 //Decrement player health, force 50 frames between health decreases - Written by David Stuckey
 void Player::healthMinus(){
     if(iframes < 0){

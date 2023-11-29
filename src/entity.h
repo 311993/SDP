@@ -79,8 +79,8 @@ class Player : public Entity{
         void update();
         void draw(FEHImage  imgs[], int offset);
         void setKill(int condition);
+        int getKillFlag();
         void collide(int x2, int y2, int w2, int h2);
-        void collide(Entity e);
         void healthMinus(), healthPlus();
         int getScore();
         int getHealth();

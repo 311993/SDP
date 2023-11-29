@@ -22,6 +22,7 @@ class Game{
     
     public:
         explicit Game();
+        void reset();
         ~Game();
         int update();
         void drawTile(int x, int y);

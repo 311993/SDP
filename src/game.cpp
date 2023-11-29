@@ -4,6 +4,34 @@
 //Construct game object and initialize game variables - Written by David Stuckey
 Game::Game(){
     try{
+        //Load images
+        assets[0].Open("assets/playerLFEH.pic");
+        assets[1].Open("assets/playerRFEH.pic");
+        assets[2].Open("assets/enemyLFEH.pic");
+        assets[3].Open("assets/enemyRFEH.pic");
+        assets[4].Open("assets/projLFEH.pic");
+        assets[5].Open("assets/projRFEH.pic");
+        assets[6].Open("assets/lavaFEH.pic");
+        assets[7].Open("assets/coinFEH.pic");
+        assets[8].Open("assets/heartFEH.pic");
+        assets[9].Open("assets/finishFEH.pic");
+        
+    }catch(int e){
+        //Notify user of failed import
+        printf("Missing or unresolvable image file. Error Code: %d", e);
+    }
+
+    Game::reset();
+}
+
+void Game::reset(){
+    
+    enemies.clear();
+    items.clear();
+    projs.clear();
+    
+
+    try{
         //Open level data file
         FILE *level = fopen("data/level.dat", "r");
 
@@ -33,22 +61,10 @@ Game::Game(){
     
         //Ensures enemies are drawn behind lava
         enemies.insert(enemies.end(), lavas.begin(), lavas.end());
-
-        //Load images
-        assets[0].Open("assets/playerLFEH.pic");
-        assets[1].Open("assets/playerRFEH.pic");
-        assets[2].Open("assets/enemyLFEH.pic");
-        assets[3].Open("assets/enemyRFEH.pic");
-        assets[4].Open("assets/projLFEH.pic");
-        assets[5].Open("assets/projRFEH.pic");
-        assets[6].Open("assets/lavaFEH.pic");
-        assets[7].Open("assets/coinFEH.pic");
-        assets[8].Open("assets/heartFEH.pic");
-        assets[9].Open("assets/finishFEH.pic");
         
     }catch(int e){
         //Notify user of failed import
-        printf("Missing or unresolvable level or image file. Error Code: %d", e);
+        printf("Missing or unresolvable level file. Error Code: %d", e);
 
         //Default Level
         for(int j = 0; j < 12; j++){
@@ -144,15 +160,9 @@ int Game::update(){
     //Increment frame timer
     t++;
 
-    //Touch to exit
-    int x,y;
-    if(t%3 == 0){
-        if(LCD.Touch(&x, &y)){
-            saveStats();
-            return 1;
-        }
-    }
-    return 0;
+    //Win/Lose
+    int result = player.getKillFlag();
+    return result;
 }
 
 //Draw tile image at given x and y coordinate - Written by David Stuckey
@@ -198,16 +208,16 @@ void Game::collideProjectile(Projectile *p){
     }
 }
 
-//Alter player state if intersecting item - Written by David Stuckey
+//Alter player state and remove item if intersecting - Written by David Stuckey
 void Game::collideItem(Item *m){
     if(player.isColliding(*m)){
         switch(m->getType()){
-            case 1:
+            case 1: //Heart
                 player.healthPlus();
-            case 0:
+            case 0: //Coin
                 player.changeScore(10);
             break;
-            case 2:
+            case 2: //Flag
                 player.changeScore(100);
                 player.setKill(2);
             break;
@@ -222,7 +232,6 @@ void Game::cullEntities(){
 
     //Remove items
     for(int i = 0; i < items.size(); i++){
-        printf("%d\n", items.at(i).isKillFlagged());
         if(items.at(i).isKillFlagged()){
             items.erase(items.begin() + i);   
         }
@@ -358,5 +367,15 @@ void Game::saveStats(){
 }
 
 int Game::displayGameEnd(int condition){
+    int x,y;
+    if(condition > 0){
+        saveStats();
+        while(true){
+            if(LCD.Touch(&x, &y)){
+                return 1;
+            }
+        }
+    }
 
+    return 0;
 }
