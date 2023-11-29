@@ -18,7 +18,7 @@ using namespace std;
 void stats();
 void info();
 void credits();
-int runGame(Game gameScreen);
+int runGame();
 
 //Run main menu, allow user to enter game, info, stats, or credits screen - Written by David Stuckey
 int main(){
@@ -79,7 +79,7 @@ int main(){
         //Determine which button field the touch was in and run appropriate command
         if(x > SCREEN_WIDTH/2 - BUTTON_WIDTH/2  && x < SCREEN_WIDTH/2 + BUTTON_WIDTH/2){
             switch(3 + (y - SCREEN_HEIGHT + 4 - BUTTON_SEPARATION + BUTTON_HEIGHT/2) / (BUTTON_HEIGHT + BUTTON_SEPARATION)){
-                case 0: runGame(gameScreen);  break;
+                case 0: runGame();  break;
                 case 1: info();     break;
                 case 2: stats();    break;
                 case 3: credits();  break;
@@ -89,7 +89,9 @@ int main(){
 }
 
 //Start a new game, and update game object until game ends - Written by David Stuckey
-int runGame(Game gameScreen){
+int runGame(){
+
+    Game gameScreen = Game();
 
     //Set initial game background
     LCD.SetBackgroundColor(192 + 256*128 + 256*256*128);
@@ -98,6 +100,8 @@ int runGame(Game gameScreen){
     while (gameScreen.update() == 0) {
         Sleep(20);
     }
+
+    gameScreen.~Game();
 
     //Wait for touch release
     int x,y;

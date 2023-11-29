@@ -13,8 +13,14 @@ Game::Game(){
         //Load in tiles from level data
         for(int i = 0; i < 128; i++){
             for(int j = 0; j < 12; j++){
+                
                 fscanf(level, "%d", &temp);
-                tiles[j][i] = temp;
+                tiles[j][i] = 0;
+
+                switch(temp){
+                    case 1: tiles[j][i] = 1; break;
+                    case 2: enemies.push_back(Enemy(i*20,j*20,20,20,0)); break;
+                }
             }
         } 
     }catch(int e){
@@ -62,11 +68,19 @@ int Game::update(){
     LCD.SetFontColor(LCD.White);
     
      for(int j = 0; j < 12; j++){
-        for(int i = cameraX/-20 + 1; i < cameraX/-20 + 16; i++){
-            if(tiles[j][i] > 0){
+        for(int i = cameraX/-20; i < cameraX/-20 + 16; i++){
+            if(tiles[j][i]){
                 drawTile(i*20 + cameraX, j*20);
                 collideTile(i*20, j*20);                
             }
+        }
+    }
+
+    //For each enemy in the vector, if it is onscreen, draw and update
+    for(int i = 0; i < enemies.size(); i++){
+        if(enemies.at(i).getX() + cameraX >= 0 && enemies.at(i).getX() + cameraX < 300 && enemies.at(i).getY() <= 240){
+            enemies.at(i).draw(assets, cameraX);
+            enemies.at(i).update();
         }
     }
 
@@ -108,6 +122,9 @@ void Game::drawTile(int x, int y){
 
 void Game::collideTile(int x, int y){
     player.collide(x,y,20,20);
+    for(int i = 0; i < enemies.size(); i++){
+        enemies.at(i).collide(x,y,20,20);
+    }
 }
 
 void Game::collideEnemy(Enemy e){

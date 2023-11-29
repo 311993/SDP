@@ -17,12 +17,12 @@ void Player::update(){
     vx = 0;
     
     if(LCD.KeyState(TK_LEFT) && !LCD.KeyState(TK_RIGHT)){
-        vx = -2;
+        vx = -3;
         dir = -1;
     }
 
     if(LCD.KeyState(TK_RIGHT) && !LCD.KeyState(TK_LEFT)){
-        vx = 2;
+        vx = 3;
         dir = 1;
     }
     
@@ -33,7 +33,7 @@ void Player::update(){
 
     //Determine whether player is jumping, if allowed
     if(LCD.KeyState(TK_UP) && jumpAllowed){
-        vy = -4;
+        vy = -8;
         jumpAllowed = false;
     }
 

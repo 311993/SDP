@@ -5,7 +5,7 @@
 #include "FEHImages.h"
 
 //Define gravity strength 
-#define g 0.2
+#define g 0.5
 
 //Class representing a game object with position and velocity - Header written by David Stuckey
 class Entity{
@@ -30,13 +30,14 @@ class Entity{
 //and defined movement behavior that damages the player - Header written by David Stuckey
 class Enemy : public Entity{
     private:
-        int type;
+        int type, dir;
     public:
         Enemy(int x, int y, int w, int h, int type);
         Enemy(int x, int y, int w, int h);
         Enemy();
         void update();
         void draw(FEHImage  imgs[], int offset);
+        void collide(int x2, int y2, int w2, int h2);
 };
 
 //Class representing a game object with position and velocity 
