@@ -173,17 +173,26 @@ void Game::scrollScreen(){
     LCD.SetFontColor(LCD.Black);
     LCD.FillRectangle(0,0,20,240);
     LCD.FillRectangle(300,0,20,240);
+    LCD.FillRectangle(0,0,320,20);
+    LCD.FillRectangle(0,220,320,20);
 }
 
 void Game::drawHUD(){
-
-    LCD.SetFontColor(LCD.Black);
-    LCD.FillRectangle(0,0,320,20);
     
     LCD.SetFontColor(LCD.White);
-    char* tString;
+
+    char tString[8];
     sprintf(tString, "%02d:%02d", t/3000, (t/50)%60);
     LCD.WriteAt(tString,240,4);
+
+    sprintf(tString, "->%03d", player.getScore());
+    LCD.WriteAt(tString,144,4);
+    
+    assets[7].Draw(122,0);
+
+    for(int i = 0; i < player.getHealth(); i++){
+        assets[8].Draw(20 + i*20, 0);
+    }
 }
 
 //Update stats based on player score and time taken - Written by David Stuckey

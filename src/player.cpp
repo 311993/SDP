@@ -94,6 +94,11 @@ int Player::getScore(){
     return score;
 }
 
+//Get player health - Written by David Stuckey
+int Player::getHealth(){
+    return health;
+}
+
 //Increase or decrease player score - Written by David Stuckey
 void Player::changeScore(int points){
     score += points;
