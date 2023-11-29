@@ -62,11 +62,6 @@ void Player::draw(FEHImage  imgs[], int offset){
     }
 }
 
-//Set killFlag based on win/lose condition - Written by David Stuckey
-void Player::setKill(int condition){
-    killFlag = condition;
-}
-
 //Push player out of a rectangle if it is intersecting, reset jump permissions if applicable - Written by David Stuckey
 void Player::collide(int x2, int y2, int w2, int h2){
     
@@ -77,6 +72,11 @@ void Player::collide(int x2, int y2, int w2, int h2){
 
     //Superclass collide - push player out of rectangle if intersecting
     Entity::collide(x2, y2, w2, h2);
+}
+
+//Set killFlag based on win/lose condition - Written by David Stuckey
+void Player::setKill(int condition){
+    killFlag = condition;
 }
 
 //Decrement player health - Written by David Stuckey
