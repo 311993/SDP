@@ -112,21 +112,10 @@ int runGame(){
 //Display stats until touch + release - Written by David Stuckey
 void stats(){
     
+    //Load Stats
     //Format: score 1, score 2, score 3, time 1, time 2, time 3, time last, score last, time 2nd last, score 2nd last
     int stats[10];
-
-    try{
-        //Open stats file
-        FILE *data = fopen("data/stats.dat", "r");
-        if(data == NULL){throw -1;}
-
-        //Read in stats
-        for(int i = 0; i < 10; i++){
-            fscanf(data, "%d", stats + i);
-        }
-
-        fclose(data);
-    }catch(int e){}
+    Game::loadStats(stats);
 
     //Stringify stats
     char score[3][16], time[3][16], last[2][32];
@@ -140,6 +129,8 @@ void stats(){
     //Last two plays
     sprintf(last[0], "Last Played: %03d | %02d:%02d", stats[7], stats[6]/60, stats[6]%60);
     sprintf(last[1], "           : %03d | %02d:%02d", stats[9], stats[8]/60, stats[8]%60);    
+
+    //Display Stats
 
     //Clear screen
     LCD.Clear();

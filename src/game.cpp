@@ -205,68 +205,75 @@ void Game::drawHUD(){
     }
 }
 
-//Update stats based on player score and time taken - Written by David Stuckey
-void Game::saveStats(){
-    try{
+//Helper function to load stats - Written by David Stuckey
+void Game::loadStats(int* dest){
 
+    try{
         //Open stats file
         FILE *data = fopen("data/stats.dat", "r");
         if(data == NULL){throw -1;}
 
-        //Read in old stats
-        //Format: score 1, score 2, score 3, time 1, time 2, time 3, time last, score last, time 2nd last, score 2nd last
-        int stats[10];
-
+        //Read in stats
         for(int i = 0; i < 10; i++){
-            fscanf(data, "%d", stats + i);
+            fscanf(data, "%d", dest + i);
         }
 
         fclose(data);
+    }catch(int e){}
+}
 
-        //Update high scores
-        if(player.getScore() > stats[2]){
-            stats[2] = player.getScore();
-        }
+//Update stats based on player score and time taken - Written by David Stuckey
+void Game::saveStats(){
 
-        if(stats[2] > stats[1]){
-            int temp = stats[2];
-            stats[2] = stats[1];
-            stats[1] = temp;
-        }
-        
-        if(stats[1] > stats[0]){
-            int temp = stats[1];
-            stats[1] = stats[0];
-            stats[0] = temp;
-        }
+    //Read in old stats
+    //Format: score 1, score 2, score 3, time 1, time 2, time 3, time last, score last, time 2nd last, score 2nd last
+    int stats[10];
+    loadStats(stats);
 
-        //Update low times
-        if(t/50 < stats[5]){
-            stats[5] = t/50;
-        }
+    //Update high scores
+    if(player.getScore() > stats[2]){
+        stats[2] = player.getScore();
+    }
 
-        if(stats[5] < stats[4]){
-            int temp = stats[5];
-            stats[5] = stats[4];
-            stats[4] = temp;
-        }
-        
-        if(stats[4] < stats[3]){
-            int temp = stats[4];
-            stats[4] = stats[3];
-            stats[3] = temp;
-        }
+    if(stats[2] > stats[1]){
+        int temp = stats[2];
+        stats[2] = stats[1];
+        stats[1] = temp;
+    }
+    
+    if(stats[1] > stats[0]){
+        int temp = stats[1];
+        stats[1] = stats[0];
+        stats[0] = temp;
+    }
 
-        //Update two previous games in record
-        stats[8] = stats[6];
-        stats[9] = stats[7];
+    //Update low times
+    if(t/50 < stats[5]){
+        stats[5] = t/50;
+    }
 
-        stats[6] = t/50;
-        stats[7] = (player.getScore() > 999 ? 999 : player.getScore());
+    if(stats[5] < stats[4]){
+        int temp = stats[5];
+        stats[5] = stats[4];
+        stats[4] = temp;
+    }
+    
+    if(stats[4] < stats[3]){
+        int temp = stats[4];
+        stats[4] = stats[3];
+        stats[3] = temp;
+    }
 
+    //Update two previous games in record
+    stats[8] = stats[6];
+    stats[9] = stats[7];
 
+    stats[6] = t/50;
+    stats[7] = (player.getScore() > 999 ? 999 : player.getScore());
+
+    try{
         //Open data file again, this time to write new stats
-        data = fopen("data/stats.dat", "w");
+        FILE *data = fopen("data/stats.dat", "w");
         if(data == NULL){throw -1;}
 
         //Update stats in file

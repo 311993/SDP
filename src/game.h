@@ -34,4 +34,5 @@ class Game{
         void drawHUD();
         void saveStats();
         int displayGameEnd(int condition);
+        static void loadStats(int* dest);
 };
