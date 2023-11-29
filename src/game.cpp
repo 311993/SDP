@@ -26,7 +26,7 @@ Game::Game(){
                     /*Proj*/    case 4: projs.push_back(Projectile(i*20,j*20,20,20,0,0)); break;
                     /*Coin*/    case 5: items.push_back(Item(i*20,j*20,20,20,0)); break;
                     /*Heart*/   case 6: items.push_back(Item(i*20,j*20,20,20,1)); break;
-                    /*Flag*/    case 7: items.push_back(Item(i*20,j*20,20,20,2)); break;
+                    /*Flag*/    case 7: items.push_back(Item(i*20,j*20,20,40,2)); break;
                 }
             }
         } 
@@ -76,14 +76,20 @@ int Game::update(){
     LCD.Clear();
 
     //Draw tiles within screen
-    LCD.SetFontColor(LCD.White);
-    
      for(int j = 0; j < 12; j++){
         for(int i = cameraX/-20; i < cameraX/-20 + 16; i++){
             if(tiles[j][i]){
                 drawTile(i*20 + cameraX, j*20);
                 collideTile(i*20, j*20);                
             }
+        }
+    }
+
+    //For each item in the vector, if it is onscreen, draw and update
+    for(int i = 0; i < items.size(); i++){
+        if(items.at(i).getX() + cameraX >= 0 && items.at(i).getX() + cameraX < 300 && items.at(i).getY() <= 240){
+            items.at(i).draw(assets, cameraX);
+            items.at(i).update();
         }
     }
 

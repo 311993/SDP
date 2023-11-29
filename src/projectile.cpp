@@ -16,6 +16,11 @@ void Projectile::update(){
 
 }
 
-void Projectile::draw(FEHImage imgs[], int offset){
-    
+//Draw projectile image at x,y coordinates with given x offset - Written by David Stuckey
+void Projectile::draw(FEHImage  imgs[], int offset){
+    if(vx > 0){
+        imgs[4].Draw(x + offset, y);
+    }else{
+        imgs[5].Draw(x + offset, y);
+    }
 }
