@@ -391,7 +391,7 @@ int Game::displayGameEnd(int condition){
         LCD.SetFontColor(LCD.Green);
         LCD.WriteAt("You Win!", 160 - strlen("You Win!")*6, 24);
         assets[0].Draw(84, 20);
-        assets[9].Draw(217, 20);
+        assets[9].Draw(217, 0);
         
         //Lose Case
         }else{
