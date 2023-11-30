@@ -42,7 +42,7 @@ void Game::reset(){
         vector<Enemy> lavas;
         
         //Load in tiles from level data
-        for(int i = 0; i < 128; i++){
+        for(int i = 0; i < 192; i++){
             for(int j = 0; j < 12; j++){
                 
                 fscanf(level, "%d", &temp);
@@ -69,7 +69,7 @@ void Game::reset(){
 
         //Default Level
         for(int j = 0; j < 12; j++){
-            for(int i = 0; i < 240; i++){
+            for(int i = 0; i < 192; i++){
                 tiles[j][i] = 0;
             }
         } 
@@ -77,7 +77,7 @@ void Game::reset(){
 
     t = 0;
     cameraX  = 0;
-    player = Player(150, 20, 20, 20);
+    player = Player(180, 20, 20, 20);
 }
 
 //Explicit destructor to prevent mem leaks with images - Written by David Stuckey
@@ -255,7 +255,7 @@ void Game::scrollScreen(){
 
     //Limit scroll to prevent drawing beyond limits of tile array
     if(cameraX > 0){ cameraX = 0;}
-    if(cameraX < -20*113){cameraX = -20*113;}
+    if(cameraX < -20*177){cameraX = -20*177;}
 
     //Mask screen edges to hide scrolling artifacts
     LCD.SetFontColor(LCD.Black);
@@ -277,9 +277,9 @@ void Game::drawHUD(){
 
     //Display score with coin symbol in front
     sprintf(tString, "->%03d", player.getScore());
-    LCD.WriteAt(tString,144,4);
+    LCD.WriteAt(tString,164,4);
     
-    assets[7].Draw(122,0);
+    assets[7].Draw(142,0);
 
     //Display as many hearts as the player has
     for(int i = 0; i < player.getHealth(); i++){
@@ -374,13 +374,12 @@ int Game::displayGameEnd(int condition){
     
     //When condition is non-zero, game should end
     if(condition > 0){
-        int coins;
         
         //Win Case
         if(condition == 2){
 
         //Calculate coins obtained
-        coins = player.getScore()/10 - 10;
+        int coins = player.getScore()/10 - 10;
 
         //Draw win screen
         LCD.SetBackgroundColor(96);
@@ -391,36 +390,19 @@ int Game::displayGameEnd(int condition){
         LCD.WriteAt("You Win!", 160 - strlen("You Win!")*6, 24);
         assets[0].Draw(84, 20);
         assets[9].Draw(217, 0);
-        
-        //Lose Case
-        }else{
 
-            //Draw lose screen
-            LCD.SetBackgroundColor(96*256*256);
-            LCD.Clear();
-            
-            //Game over display flanked by enemies
-            LCD.SetFontColor(LCD.Red);
-            LCD.WriteAt("Game Over", 160 - strlen("Game Over")*6, 24);
-            assets[2].Draw(84, 20);
-            assets[5].Draw(217, 20);
-
-            //Calculate coins obtained
-            coins = player.getScore()/10;
-        }
-
-        //Common endgame score calculation
+        //Endgame score calculation
         //Each heart is +30 pts
         int healthPts = player.getHealth()*30;
 
-        //Every 6 seconds is -1 pt, to a max penalty of 50
-        int timePts = -t/300;
+        //Every 3 seconds is -1 pt, to a max penalty of 50
+        int timePts = -t/150;
         if(timePts < -50){ timePts = -50;}
 
         player.changeScore(healthPts + timePts);
         player.update();
 
-        //Display common end screen
+        //Display stats
         LCD.SetFontColor(LCD.White);
 
         //Display finish time in mm:ss (t is in frames ~ 50th of a second)
@@ -467,6 +449,25 @@ int Game::displayGameEnd(int condition){
 
         //Update stats    
         saveStats();
+        
+        //Lose Case
+        }else{
+
+            //Draw lose screen
+            LCD.SetBackgroundColor(96*256*256);
+            LCD.Clear();
+            
+            //Game over display flanked by enemies
+            LCD.SetFontColor(LCD.Red);
+            LCD.WriteAt("Game Over", 160 - strlen("Game Over")*6, 108);
+            assets[2].Draw(84, 104);
+            assets[5].Draw(217, 104);
+
+        }
+
+        //Tell user how to return to menu
+        LCD.SetFontColor(LCD.Gray);
+        LCD.WriteAt("(Touch to Return to Menu)", 160 - strlen("(Touch to Return to Menu)")*6, 216);
 
         //Wait for touch and release
         while(!LCD.Touch(&x, &y)){}

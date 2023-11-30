@@ -10,7 +10,7 @@ using namespace std;
 //Class representing main game screen/loop - Header written by David Stuckey
 class Game{
     private:
-        int tiles[12][128];
+        int tiles[12][192];
         int cameraX, t;
         
         vector<Enemy> enemies;
