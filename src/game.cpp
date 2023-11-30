@@ -24,12 +24,13 @@ Game::Game(){
     Game::reset();
 }
 
+//Reset game state to initial values, load in level data - Written by David Stuckey
 void Game::reset(){
     
     enemies.clear();
     items.clear();
     projs.clear();
-    
+
 
     try{
         //Open level data file
@@ -161,7 +162,7 @@ int Game::update(){
     t++;
 
     //Win/Lose
-    int result = player.getKillFlag();
+    int result = displayGameEnd(player.getKillFlag());
     return result;
 }
 
@@ -214,6 +215,7 @@ void Game::collideItem(Item *m){
         switch(m->getType()){
             case 1: //Heart
                 player.healthPlus();
+            break;
             case 0: //Coin
                 player.changeScore(10);
             break;
@@ -366,15 +368,111 @@ void Game::saveStats(){
     }catch(int e){}
 }
 
+//Display game/win screen and end the game if applicable, returns the condition passed in - Written by David Stuckey
 int Game::displayGameEnd(int condition){
     int x,y;
+    
+    //When condition is non-zero, game should end
     if(condition > 0){
-        saveStats();
-        while(true){
-            if(LCD.Touch(&x, &y)){
-                return 1;
-            }
+        int coins;
+        
+        //Win Case
+        if(condition == 2){
+
+        //Calculate coins obtained
+        coins = player.getScore()/10 - 10;
+
+        //Draw win screen
+        LCD.SetBackgroundColor(96);
+        LCD.Clear();
+        
+        //Win display flanked by player and flag
+        LCD.SetFontColor(LCD.Green);
+        LCD.WriteAt("You Win!", 160 - strlen("You Win!")*6, 24);
+        assets[0].Draw(84, 20);
+        assets[9].Draw(217, 0);
+        
+        //Lose Case
+        }else{
+
+            //Draw lose screen
+            LCD.SetBackgroundColor(96*256*256);
+            LCD.Clear();
+            
+            //Game over display flanked by enemies
+            LCD.SetFontColor(LCD.Red);
+            LCD.WriteAt("Game Over", 160 - strlen("Game Over")*6, 24);
+            assets[2].Draw(84, 20);
+            assets[5].Draw(217, 20);
+
+            //Calculate coins obtained
+            coins = player.getScore()/10;
         }
+
+        //Common endgame score calculation
+        //Each heart is +30 pts
+        int healthPts = player.getHealth()*30;
+
+        //Every 6 seconds is -1 pt, to a max penalty of 50
+        int timePts = -t/300;
+        if(timePts < -50){ timePts = -50;}
+
+        player.changeScore(healthPts + timePts);
+        player.update();
+
+        //Display common end screen
+        LCD.SetFontColor(LCD.White);
+
+        //Display finish time in mm:ss (t is in frames ~ 50th of a second)
+        //times used are frame-derived to be fair to users with different frame-rates
+        char tString[24];
+        sprintf(tString, "Finish Time: %02d:%02d", t/3000, (t/50)%60);
+        LCD.WriteAt(tString, 160 - strlen(tString)*6,60);
+        
+        //Display final score
+        sprintf(tString, "Final Score: %03d", player.getScore());
+        LCD.WriteAt(tString,160 - strlen(tString)*6,96);
+
+        //Display score calculation for "educational value"
+        LCD.WriteAt("= 10  +30  +100  -  /6", 160 - strlen("= 10  +30  +100  -  /6")*6 ,132);
+
+        //Insert Item Images into equation
+        assets[7].Draw(80,128);
+        assets[8].Draw(140,128);
+        assets[9].Draw(212,108);
+
+        //Draw Clock into equation
+        LCD.SetFontColor(LCD.Black);
+        LCD.FillCircle(256, 138, 10);
+
+        LCD.SetFontColor(LCD.White);
+        LCD.FillCircle(256, 138, 8);
+
+        LCD.SetFontColor(LCD.Black);
+        LCD.DrawLine(256, 138, 256, 130);
+        LCD.DrawLine(256, 138, 262, 142);
+
+        //Display number of hearts and coins at game end
+        LCD.SetFontColor(LCD.White);
+        
+        sprintf(tString, "  = %02d           = %d", coins, player.getHealth());
+        LCD.WriteAt(tString, 36, 180);
+        
+        assets[7].Draw(38,176);
+        assets[8].Draw(218,176);
+
+        //Tell user how to return to menu
+        LCD.SetFontColor(LCD.Gray);
+        LCD.WriteAt("(Touch to Return to Menu)", 160 - strlen("(Touch to Return to Menu)")*6, 216);
+
+        //Update stats    
+        saveStats();
+
+        //Wait for touch and release
+        while(!LCD.Touch(&x, &y)){}
+        while(LCD.Touch(&x, &y)){}
+
+        return condition;
     }
 
     return 0;

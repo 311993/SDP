@@ -17,12 +17,12 @@ void Player::update(){
     //Determine x velocity based on key input
     vx = 0;
     
-    if(LCD.KeyState(TK_LEFT) && !LCD.KeyState(TK_RIGHT)){
+    if((LCD.KeyState(TK_LEFT) || LCD.KeyState('A'))&& !(LCD.KeyState(TK_RIGHT) || LCD.KeyState('D'))){
         vx = -3;
         dir = -1;
     }
 
-    if(LCD.KeyState(TK_RIGHT) && !LCD.KeyState(TK_LEFT)){
+    if((LCD.KeyState(TK_RIGHT) || LCD.KeyState('D'))&& !(LCD.KeyState(TK_LEFT) || LCD.KeyState('A'))){
         vx = 3;
         dir = 1;
     }
@@ -33,7 +33,7 @@ void Player::update(){
     }
 
     //Determine whether player is jumping, if allowed
-    if(LCD.KeyState(TK_UP) && jumpAllowed){
+    if((LCD.KeyState(TK_UP) || LCD.KeyState('W') || LCD.KeyState(TK_SPACE)) && jumpAllowed){
         vy = -8;
         jumpAllowed = false;
     }
@@ -49,6 +49,14 @@ void Player::update(){
     //Lose conditions
     if(health <= 0 || y > 240){ 
         kill();
+    }
+
+    //Score limits
+    if(score > 999){
+        score = 999;
+    }
+    if(score < 0){
+        score = 0;
     }
 
 }

@@ -87,6 +87,10 @@ int main(){
                 case 3: credits();  break;
             }
         }
+
+        if(LCD.KeyState(TK_ESCAPE)){
+            break;
+        }
     }
 
     //Clear game object
@@ -96,7 +100,9 @@ int main(){
 //Start a new game, and update game object until game ends - Written by David Stuckey
 int runGame(){
 
+    //reset game state
     gameScreen->reset();
+
     //Set initial game background
     LCD.SetBackgroundColor(192 + 256*128 + 256*256*128);
    
@@ -108,7 +114,7 @@ int runGame(){
     Sleep(20);
 }
 
-//Display stats until touch + release - Written by David Stuckey
+//Display stats until touch + release -  Written by David Stuckey
 void stats(){
     
     //Load Stats
@@ -122,7 +128,7 @@ void stats(){
     //high scores + low times
     for(int i = 0; i<3; i++){
         sprintf(score[i], "%d. %03d", i+1, stats[i]);
-        sprintf(time[i],  "%d. %03d", i+1, stats[i + 3]);
+        sprintf(time[i],  "%d. %01d:%02d", i+1, stats[i + 3]/60, stats[i + 3]%60);
     }
 
     //Last two plays
@@ -180,23 +186,27 @@ void info(){
     LCD.SetFontColor(LCD.White);
     LCD.WriteAt("* Left/right arrows or", 12, 42);
     LCD.WriteAt("  A/D keys to move", 12, 66);
-    LCD.WriteAt("* Up arrow, touch, or ", 12, 90);
-    LCD.WriteAt("  spacebar to jump", 12, 114);
+    LCD.WriteAt("* Up / W / Space to jump", 12, 90);
     
     //Write gameplay instructions
+    LCD.WriteAt("* Reach the      to win", 12, 114);
+    LCD.SetFontColor(LCD.Green);
+    LCD.WriteAt("flag", 12 + strlen("* Reach the ")*12, 114);
+    
+    LCD.SetFontColor(LCD.White);
     LCD.WriteAt("* Avoid ", 12, 138);
     LCD.SetFontColor(LCD.Red);
-    LCD.WriteAt("red enemies",12 + strlen("* Avoid ")*12, 138);
+    LCD.WriteAt("enemies",12 + strlen("* Avoid ")*12, 138);
     
     LCD.SetFontColor(LCD.White);
     LCD.WriteAt("* Collect ", 12, 162);
     LCD.SetFontColor(LCD.Yellow);
-    LCD.WriteAt("yellow coins", 12 + strlen("* Collect ")*12, 162);
+    LCD.WriteAt("coins", 12 + strlen("* Collect ")*12, 162);
     
     LCD.SetFontColor(LCD.White);
     LCD.WriteAt("* Heal with ", 12, 186);
     LCD.SetFontColor(LCD.Green);
-    LCD.WriteAt("green hearts", 12 + strlen("* Heal with ")*12, 186);
+    LCD.WriteAt("hearts", 12 + strlen("* Heal with ")*12, 186);
     
     LCD.SetFontColor(LCD.Gray);
     LCD.WriteAt("(Touch to Return to Menu)", SCREEN_WIDTH/2 - strlen("(Touch to Return to Menu)")*6, 216);
