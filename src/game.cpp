@@ -375,11 +375,13 @@ int Game::displayGameEnd(int condition){
     //When condition is non-zero, game should end
     if(condition > 0){
         
+        int coins;
+
         //Win Case
         if(condition == 2){
 
         //Calculate coins obtained
-        int coins = player.getScore()/10 - 10;
+        coins = player.getScore()/10 - 10;
 
         //Draw win screen
         LCD.SetBackgroundColor(96);
@@ -389,7 +391,24 @@ int Game::displayGameEnd(int condition){
         LCD.SetFontColor(LCD.Green);
         LCD.WriteAt("You Win!", 160 - strlen("You Win!")*6, 24);
         assets[0].Draw(84, 20);
-        assets[9].Draw(217, 0);
+        assets[9].Draw(217, 20);
+        
+        //Lose Case
+        }else{
+
+            //Draw lose screen
+            LCD.SetBackgroundColor(96*256*256);
+            LCD.Clear();
+            
+            //Game over display flanked by enemies
+            LCD.SetFontColor(LCD.Red);
+            LCD.WriteAt("Game Over", 160 - strlen("Game Over")*6, 24);
+            assets[2].Draw(84, 20);
+            assets[5].Draw(217, 20);
+
+            //Calculate number of coins earned
+            coins = player.getScore()/10;
+        }
 
         //Endgame score calculation
         //Each heart is +30 pts
@@ -447,27 +466,13 @@ int Game::displayGameEnd(int condition){
         LCD.SetFontColor(LCD.Gray);
         LCD.WriteAt("(Touch to Return to Menu)", 160 - strlen("(Touch to Return to Menu)")*6, 216);
 
-        //Update stats    
-        saveStats();
-        
-        //Lose Case
-        }else{
-
-            //Draw lose screen
-            LCD.SetBackgroundColor(96*256*256);
-            LCD.Clear();
-            
-            //Game over display flanked by enemies
-            LCD.SetFontColor(LCD.Red);
-            LCD.WriteAt("Game Over", 160 - strlen("Game Over")*6, 108);
-            assets[2].Draw(84, 104);
-            assets[5].Draw(217, 104);
-
+        //Don't update time records for game overs
+        if(condition == 1){
+            t = 299999;
         }
 
-        //Tell user how to return to menu
-        LCD.SetFontColor(LCD.Gray);
-        LCD.WriteAt("(Touch to Return to Menu)", 160 - strlen("(Touch to Return to Menu)")*6, 216);
+        //Update stats    
+        saveStats();
 
         //Wait for touch and release
         while(!LCD.Touch(&x, &y)){}
