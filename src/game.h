@@ -34,6 +34,7 @@ class Game{
         void scrollScreen();
         void drawHUD();
         void saveStats();
+        void drawDeath();
         int displayGameEnd(int condition);
         static void loadStats(int* dest);
 };

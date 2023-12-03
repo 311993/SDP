@@ -2,10 +2,10 @@
 #include "math.h"
 #include "time.h"
 
-//Construct game object and initialize game variables - Written by David Stuckey
+//Construct game object and initialize game variables - Written by David Stuckey and Olivia Smith
 Game::Game(){
     try{
-        //Load images - Written by David Stuckey and Olivia Smith
+        //Load images
         assets[0].Open("assets/playerLFEH.pic");
         assets[1].Open("assets/playerRFEH.pic");
         assets[2].Open("assets/enemyLFEH.pic");
@@ -25,6 +25,7 @@ Game::Game(){
         printf("Missing or unresolvable image file. Error Code: %d", e);
     }
 
+    //Set game to initial values
     Game::reset();
 }
 
@@ -457,89 +458,18 @@ int Game::displayGameEnd(int condition){
         //Lose Case
         }else{
 
-            //Draw lose screen - Written by David Stuckey and Olivia Smith
+            //Draw lose screen
             LCD.SetBackgroundColor(96*256*256);
             LCD.Clear();
             
-            //Game over display flanked by enemies and death animation - Written by David Stuckey and Olivia Smith
+            //Game over display flanked by enemies
             LCD.SetFontColor(LCD.Red);
             LCD.WriteAt("Game Over", 160 - strlen("Game Over")*6, 68);
             assets[2].Draw(84, 64);
             assets[5].Draw(217, 64);
-            assets[11].Draw(70, 144);
-            assets[10].Draw(155, 90);
-            Sleep(100);
-            LCD.SetFontColor(96*256*256);
-            LCD.FillRectangle(155, 90, 20, 20);
-            assets[10].Draw(155, 93);
-            Sleep(100);
-            LCD.SetFontColor(96*256*256);
-	        LCD.FillRectangle(155, 93, 20, 20);
-            assets[10].Draw(155, 96);
-            Sleep(100);
-            LCD.SetFontColor(96*256*256);
-	        LCD.FillRectangle(155, 96, 20, 20);
-            assets[10].Draw(155, 99);
-            Sleep(100);
-            LCD.SetFontColor(96*256*256);
-	        LCD.FillRectangle(155, 99, 20, 20);
-            assets[10].Draw(155, 102);
-            Sleep(100);
-            LCD.SetFontColor(96*256*256);
-	        LCD.FillRectangle(155, 102, 20, 20);
-            assets[10].Draw(155, 105);
-            Sleep(100);
-            LCD.SetFontColor(96*256*256);
-	        LCD.FillRectangle(155, 105, 20, 20);
-            assets[10].Draw(155, 108);
-            Sleep(100);
-            LCD.SetFontColor(96*256*256);
-	        LCD.FillRectangle(155, 108, 20, 20);
-            assets[10].Draw(155, 112);
-            Sleep(100);
-            LCD.SetFontColor(96*256*256);
-	        LCD.FillRectangle(155, 112, 20, 20);
-            assets[10].Draw(155, 115);
-            Sleep(100);
-            LCD.SetFontColor(96*256*256);
-	        LCD.FillRectangle(155, 115, 20, 20);
-            assets[10].Draw(155, 118);
-            Sleep(100);
-            LCD.SetFontColor(96*256*256);
-	        LCD.FillRectangle(155, 118, 20, 20);
-            assets[10].Draw(155, 121);
-            Sleep(100);
-            LCD.SetFontColor(96*256*256);
-	        LCD.FillRectangle(155, 121, 20, 20);
-            assets[10].Draw(155, 124);
-            Sleep(100);
-            LCD.SetFontColor(96*256*256);
-	        LCD.FillRectangle(155, 124, 20, 20);
-            assets[10].Draw(155, 128);
-            LCD.SetFontColor(96*256*256);
-	        LCD.FillRectangle(155, 128, 20, 20);
-	        assets[11].Draw(70, 144);
-            assets[10].Draw(155, 131);
-            LCD.SetFontColor(96*256*256);
-	        LCD.FillRectangle(155, 131, 20, 20);
-	        assets[11].Draw(70, 144);
-            assets[10].Draw(155, 134);
-            LCD.SetFontColor(96*256*256);
-	        LCD.FillRectangle(155, 134, 20, 20);
-	        assets[11].Draw(70, 144);
-            assets[10].Draw(155, 137);
-            LCD.SetFontColor(96*256*256);
-	        LCD.FillRectangle(155, 137, 20, 20);
-	        assets[11].Draw(70, 144);
-            assets[10].Draw(155, 140);
-            LCD.SetFontColor(96*256*256);
-	        LCD.FillRectangle(155, 140, 20, 20);
-	        assets[11].Draw(70, 144);
-            assets[10].Draw(155, 143);
-            LCD.SetFontColor(96*256*256);
-	        LCD.FillRectangle(155, 143, 20, 20);
-	        assets[11].Draw(70, 144);
-            assets[12].Draw(110, 70);
+            
+            //Draw death animation
+            drawDeath();
         }
 
         //Tell user how to return to menu
@@ -554,4 +484,90 @@ int Game::displayGameEnd(int condition){
     }
 
     return 0;
+}
+
+//Draw Game Over Animation - Written by Olivia Smith
+void Game::drawDeath(){
+    
+    //Draw Lava Pool
+    assets[11].Draw(60, 144);
+
+    //Draw player in initial poisition
+    assets[10].Draw(145, 90);
+    Sleep(100);
+    
+    //Animate player falling into lava
+
+    //Frame 1
+    LCD.SetFontColor(96*256*256);
+    LCD.FillRectangle(145, 90, 20, 20);
+    assets[10].Draw(145, 93);
+    Sleep(100);
+    
+    //Frame 2
+    LCD.SetFontColor(96*256*256);
+    LCD.FillRectangle(145, 93, 20, 20);
+    assets[10].Draw(145, 96);
+    Sleep(100);
+    
+    //Frame 3
+    LCD.SetFontColor(96*256*256);
+    LCD.FillRectangle(145, 96, 20, 20);
+    assets[10].Draw(145, 99);
+    Sleep(100);
+    
+    //Frame 4
+    LCD.SetFontColor(96*256*256);
+    LCD.FillRectangle(145, 99, 20, 20);
+    assets[10].Draw(145, 102);
+    Sleep(100);
+    
+    //Frame 5
+    LCD.SetFontColor(96*256*256);
+    LCD.FillRectangle(145, 102, 20, 20);
+    assets[10].Draw(145, 105);
+    Sleep(100);
+    
+    //Frame 6
+    LCD.SetFontColor(96*256*256);
+    LCD.FillRectangle(145, 105, 20, 20);
+    assets[10].Draw(145, 108);
+    Sleep(100);
+    
+    //Frame 7
+    LCD.SetFontColor(96*256*256);
+    LCD.FillRectangle(145, 108, 20, 20);
+    assets[10].Draw(145, 112);
+    Sleep(100);
+    
+    //Frame 8
+    LCD.SetFontColor(96*256*256);
+    LCD.FillRectangle(145, 112, 20, 20);
+    assets[10].Draw(145, 115);
+    Sleep(100);
+    
+    //Frame 9
+    LCD.SetFontColor(96*256*256);
+    LCD.FillRectangle(145, 115, 20, 20);
+    assets[10].Draw(145, 118);
+    Sleep(100);
+    
+    //Frame 10
+    LCD.SetFontColor(96*256*256);
+    LCD.FillRectangle(145, 118, 20, 20);
+    assets[10].Draw(145, 121);
+    Sleep(100);
+    
+    //Frame 11
+    LCD.SetFontColor(96*256*256);
+    LCD.FillRectangle(145, 121, 20, 20);
+    assets[10].Draw(145, 124);
+    Sleep(100);
+    
+    //Cover up player
+    LCD.SetFontColor(96*256*256);
+    LCD.FillRectangle(145, 124, 20, 20);
+
+    //Draw lava splash as player enters lava
+    assets[12].Draw(110, 70);
 }
