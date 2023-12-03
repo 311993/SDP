@@ -4,7 +4,7 @@ V1.1 - 12/03/2023
 Programmed by David Stuckey and Olivia Smith  
 Art by Olivia Smith  
 
-Creted for the Software Development Project component of the FEH Program at The Ohio State University  
+Creted for the Software Design Project component of the FEH Program at The Ohio State University  
 Using the FEH Proteus Simulator Libraries
 
 
