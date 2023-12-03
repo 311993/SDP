@@ -7,7 +7,7 @@ OBJS = FEHLCD.o FEHRandom.o FEHSD.o tigr.o FEHUtility.o FEHImages.o
 
 ifeq ($(OS),Windows_NT)
 	LDFLAGS = -lopengl32 -lgdi32
-	EXEC = game.exe
+	EXEC = ShapeDash.exe
 else
 	UNAME := $(shell uname)
 	ifeq ($(UNAME),Darwin)
@@ -15,7 +15,7 @@ else
 	else
 		LDFLAGS = `pkg-config --libs --cflags opengl x11 glx`
 	endif
-	EXEC = game.out
+	EXEC = ShapeDash.out
 endif
 
 # This is a recursive implementation of the wildcard function provided by gnu.
