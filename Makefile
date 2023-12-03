@@ -1,3 +1,5 @@
+#This file modified by David Stuckey to prevent library auto-update
+
 LIBRARYREPO := simulator_libraries
 
 ifeq ($(OS),Windows_NT)	

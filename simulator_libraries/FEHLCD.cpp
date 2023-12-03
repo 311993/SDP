@@ -182,6 +182,7 @@ bool FEHLCD::Touch(int *x_pos, int *y_pos)
     return (mouseButton & 0x01) == 1;
 }
 
+//Get pressed/unpressed state of a key on the system keyboard as defined in tigr library- Written by David Stuckey
 int FEHLCD::KeyState(int key)
 {
     tigrKeyHeld(screen, key);

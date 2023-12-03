@@ -1,8 +1,10 @@
 # Shape Dash
-V1.1 - 12/02/2023
+V1.1 - 12/03/2023
 
 Programmed by David Stuckey and Olivia Smith  
-For the Software Development Project component of the FEH Program at The Ohio State University  
+Art by Olivia Smith  
+
+Creted for the Software Development Project component of the FEH Program at The Ohio State University  
 Using the FEH Proteus Simulator Libraries
 
 

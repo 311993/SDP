@@ -1,3 +1,5 @@
+#This file modified by David Stuckey to rename output executable
+
 CC = g++
 CPPFLAGS = -MMD -MP -Os -DOBJC_OLD_DISPATCH_PROTOTYPES -g
 IGNORED_WARNINGS = -w
@@ -7,7 +9,8 @@ OBJS = FEHLCD.o FEHRandom.o FEHSD.o tigr.o FEHUtility.o FEHImages.o
 
 ifeq ($(OS),Windows_NT)
 	LDFLAGS = -lopengl32 -lgdi32
-	EXEC = ShapeDash.exe
+	#
+	EXEC = ShapeDash.exe	
 else
 	UNAME := $(shell uname)
 	ifeq ($(UNAME),Darwin)
