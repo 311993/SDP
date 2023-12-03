@@ -1,10 +1,11 @@
 #include "game.h"
 #include "math.h"
+#include "time.h"
 
 //Construct game object and initialize game variables - Written by David Stuckey
 Game::Game(){
     try{
-        //Load images
+        //Load images - Written by David Stuckey and Olivia Smith
         assets[0].Open("assets/playerLFEH.pic");
         assets[1].Open("assets/playerRFEH.pic");
         assets[2].Open("assets/enemyLFEH.pic");
@@ -15,6 +16,9 @@ Game::Game(){
         assets[7].Open("assets/coinFEH.pic");
         assets[8].Open("assets/heartFEH.pic");
         assets[9].Open("assets/finishFEH.pic");
+        assets[10].Open("assets/playersadFEH.pic");
+        assets[11].Open("assets/lavadeathFEH.pic");
+        assets[12].Open("assets/lavasplashFEH.pic");
         
     }catch(int e){
         //Notify user of failed import
@@ -375,13 +379,11 @@ int Game::displayGameEnd(int condition){
     //When condition is non-zero, game should end
     if(condition > 0){
         
-        int coins;
-
         //Win Case
         if(condition == 2){
 
         //Calculate coins obtained
-        coins = player.getScore()/10 - 10;
+        int coins = player.getScore()/10 - 10;
 
         //Draw win screen
         LCD.SetBackgroundColor(96);
@@ -392,23 +394,6 @@ int Game::displayGameEnd(int condition){
         LCD.WriteAt("You Win!", 160 - strlen("You Win!")*6, 24);
         assets[0].Draw(84, 20);
         assets[9].Draw(217, 0);
-        
-        //Lose Case
-        }else{
-
-            //Draw lose screen
-            LCD.SetBackgroundColor(96*256*256);
-            LCD.Clear();
-            
-            //Game over display flanked by enemies
-            LCD.SetFontColor(LCD.Red);
-            LCD.WriteAt("Game Over", 160 - strlen("Game Over")*6, 24);
-            assets[2].Draw(84, 20);
-            assets[5].Draw(217, 20);
-
-            //Calculate number of coins earned
-            coins = player.getScore()/10;
-        }
 
         //Endgame score calculation
         //Each heart is +30 pts
@@ -466,13 +451,100 @@ int Game::displayGameEnd(int condition){
         LCD.SetFontColor(LCD.Gray);
         LCD.WriteAt("(Touch to Return to Menu)", 160 - strlen("(Touch to Return to Menu)")*6, 216);
 
-        //Don't update time records for game overs
-        if(condition == 1){
-            t = 299999;
-        }
-
         //Update stats    
         saveStats();
+        
+        //Lose Case
+        }else{
+
+            //Draw lose screen - Written by David Stuckey and Olivia Smith
+            LCD.SetBackgroundColor(96*256*256);
+            LCD.Clear();
+            
+            //Game over display flanked by enemies and death animation - Written by David Stuckey and Olivia Smith
+            LCD.SetFontColor(LCD.Red);
+            LCD.WriteAt("Game Over", 160 - strlen("Game Over")*6, 68);
+            assets[2].Draw(84, 64);
+            assets[5].Draw(217, 64);
+            assets[11].Draw(70, 144);
+            assets[10].Draw(155, 90);
+            Sleep(100);
+            LCD.SetFontColor(96*256*256);
+            LCD.FillRectangle(155, 90, 20, 20);
+            assets[10].Draw(155, 93);
+            Sleep(100);
+            LCD.SetFontColor(96*256*256);
+	        LCD.FillRectangle(155, 93, 20, 20);
+            assets[10].Draw(155, 96);
+            Sleep(100);
+            LCD.SetFontColor(96*256*256);
+	        LCD.FillRectangle(155, 96, 20, 20);
+            assets[10].Draw(155, 99);
+            Sleep(100);
+            LCD.SetFontColor(96*256*256);
+	        LCD.FillRectangle(155, 99, 20, 20);
+            assets[10].Draw(155, 102);
+            Sleep(100);
+            LCD.SetFontColor(96*256*256);
+	        LCD.FillRectangle(155, 102, 20, 20);
+            assets[10].Draw(155, 105);
+            Sleep(100);
+            LCD.SetFontColor(96*256*256);
+	        LCD.FillRectangle(155, 105, 20, 20);
+            assets[10].Draw(155, 108);
+            Sleep(100);
+            LCD.SetFontColor(96*256*256);
+	        LCD.FillRectangle(155, 108, 20, 20);
+            assets[10].Draw(155, 112);
+            Sleep(100);
+            LCD.SetFontColor(96*256*256);
+	        LCD.FillRectangle(155, 112, 20, 20);
+            assets[10].Draw(155, 115);
+            Sleep(100);
+            LCD.SetFontColor(96*256*256);
+	        LCD.FillRectangle(155, 115, 20, 20);
+            assets[10].Draw(155, 118);
+            Sleep(100);
+            LCD.SetFontColor(96*256*256);
+	        LCD.FillRectangle(155, 118, 20, 20);
+            assets[10].Draw(155, 121);
+            Sleep(100);
+            LCD.SetFontColor(96*256*256);
+	        LCD.FillRectangle(155, 121, 20, 20);
+            assets[10].Draw(155, 124);
+            Sleep(100);
+            LCD.SetFontColor(96*256*256);
+	        LCD.FillRectangle(155, 124, 20, 20);
+            assets[10].Draw(155, 128);
+            LCD.SetFontColor(96*256*256);
+	        LCD.FillRectangle(155, 128, 20, 20);
+	        assets[11].Draw(70, 144);
+            assets[10].Draw(155, 131);
+            LCD.SetFontColor(96*256*256);
+	        LCD.FillRectangle(155, 131, 20, 20);
+	        assets[11].Draw(70, 144);
+            assets[10].Draw(155, 134);
+            LCD.SetFontColor(96*256*256);
+	        LCD.FillRectangle(155, 134, 20, 20);
+	        assets[11].Draw(70, 144);
+            assets[10].Draw(155, 137);
+            LCD.SetFontColor(96*256*256);
+	        LCD.FillRectangle(155, 137, 20, 20);
+	        assets[11].Draw(70, 144);
+            assets[10].Draw(155, 140);
+            LCD.SetFontColor(96*256*256);
+	        LCD.FillRectangle(155, 140, 20, 20);
+	        assets[11].Draw(70, 144);
+            assets[10].Draw(155, 143);
+            LCD.SetFontColor(96*256*256);
+	        LCD.FillRectangle(155, 143, 20, 20);
+	        assets[11].Draw(70, 144);
+            assets[12].Draw(110, 70);
+        }
+
+        //Tell user how to return to menu
+        LCD.SetFontColor(LCD.Gray);
+        LCD.WriteAt("(Touch to Return to Menu)", 160 - strlen("(Touch to Return to Menu)")*6, 216);
 
         //Wait for touch and release
         while(!LCD.Touch(&x, &y)){}
