@@ -1,4 +1,4 @@
-~Shape Quest V1.1~              12/02/2023
+Shape Quest V1.1             12/02/2023
 
 Programmed by David Stuckey and Olivia Smith
 Using the FEH Proteus Simulator Libraries
